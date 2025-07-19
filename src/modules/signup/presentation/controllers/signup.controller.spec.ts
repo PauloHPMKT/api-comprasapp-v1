@@ -3,6 +3,7 @@ import { SignupController } from './signup.controller';
 import { SignupModel } from '../../domain/models/signup';
 import { AddAccount } from '../../domain/usecases/add-account';
 import { MissingParamError } from '@/shared/presentation/errors/missing-param-error';
+import { UserAlreadyExistsError } from '@/shared/presentation/errors/user-already-exists-error';
 
 const makeAddAccountStub = (): AddAccount => {
   class AddAccountStub implements AddAccount {
@@ -146,7 +147,7 @@ describe('AppController', () => {
   it('should return 422 if User already exists', async () => {
     const { sut, addAccountStub } = await makeSut();
     jest.spyOn(addAccountStub, 'execute').mockImplementationOnce(() => {
-      throw new Error('User already exists');
+      throw new UserAlreadyExistsError();
     });
     const request = {
       body: {
@@ -158,6 +159,6 @@ describe('AppController', () => {
     };
     const response = await sut.handle(request);
     expect(response.statusCode).toBe(422);
-    expect(response.body).toEqual(new Error('User already exists'));
+    expect(response.body).toEqual(new UserAlreadyExistsError());
   });
 });

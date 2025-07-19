@@ -5,6 +5,7 @@ import { BaseController } from '@/shared/presentation/protocols/Controller';
 import { badRequest } from '@/shared/presentation/helpers/http-response';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/http';
 import { MissingParamError } from '@/shared/presentation/errors/missing-param-error';
+import { UserAlreadyExistsError } from '@/shared/presentation/errors/user-already-exists-error';
 
 @Controller('signup')
 export class SignupController extends BaseController<SignupModel.Params> {
@@ -42,10 +43,10 @@ export class SignupController extends BaseController<SignupModel.Params> {
       });
     } catch (error) {
       console.error(error);
-      if (error instanceof Error && error.message === 'User already exists') {
+      if (error instanceof UserAlreadyExistsError) {
         return {
           statusCode: 422,
-          body: new Error('User already exists'),
+          body: error,
         };
       }
       return {
