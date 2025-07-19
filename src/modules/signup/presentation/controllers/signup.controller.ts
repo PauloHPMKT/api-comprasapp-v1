@@ -42,6 +42,12 @@ export class SignupController extends BaseController<SignupModel.Params> {
       });
     } catch (error) {
       console.error(error);
+      if (error instanceof Error && error.message === 'User already exists') {
+        return {
+          statusCode: 422,
+          body: new Error('User already exists'),
+        };
+      }
       return {
         statusCode: 500,
         body: new Error('Internal server error'),
