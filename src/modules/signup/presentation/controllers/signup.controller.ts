@@ -1,4 +1,4 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { Controller, Inject, Post, Req } from '@nestjs/common';
 import { SignupModel } from '../../domain/models/signup';
 import { AddAccount } from '../../domain/usecases/add-account';
 import { BaseController } from '@/shared/presentation/protocols/Controller';
@@ -22,7 +22,7 @@ export class SignupController extends BaseController<SignupModel.Params> {
 
   @Post()
   async handle(
-    @Body() request: HttpRequest<SignupModel.Params>,
+    @Req() request: HttpRequest<SignupModel.Params>,
   ): Promise<HttpResponse<string | Error>> {
     try {
       const requiredFields = [
@@ -48,6 +48,7 @@ export class SignupController extends BaseController<SignupModel.Params> {
 
       return created(useremail);
     } catch (error) {
+      console.error(error);
       if (error instanceof UserAlreadyExistsError) {
         return unprocessableEntity(error);
       }
