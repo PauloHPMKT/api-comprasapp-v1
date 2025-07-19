@@ -1,16 +1,37 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SignupController } from './signup.controller';
+import { SignupModel } from '../../domain/models/signup';
+import { AddAccount } from '../../domain/usecases/add-account';
+
+const makeAddAccountStub = (): AddAccount => {
+  class AddAccountStub implements AddAccount {
+    // TODO - Adicionar objeto de valor para garantir que a string é um email válido Promise<string | Error>
+    async execute(params: SignupModel.Params): Promise<string> {
+      console.log(params);
+      return 'valid_email@mail.com';
+    }
+  }
+  return new AddAccountStub();
+};
 
 const makeSut = async (): Promise<SutTypes> => {
+  const addAccountStub = makeAddAccountStub();
   const moduleRef: TestingModule = await Test.createTestingModule({
     controllers: [SignupController],
+    providers: [
+      {
+        provide: 'AddAccount',
+        useValue: addAccountStub,
+      },
+    ],
   }).compile();
   const sut = moduleRef.get<SignupController>(SignupController);
-  return { sut };
+  return { sut, addAccountStub };
 };
 
 type SutTypes = {
   sut: SignupController;
+  addAccountStub: AddAccount;
 };
 
 describe('AppController', () => {
@@ -81,5 +102,25 @@ describe('AppController', () => {
     expect(response.body).toEqual(
       new Error('Missing param confirmationPassword'),
     );
+  });
+
+  it('should call AddAccount with correct values', async () => {
+    const { sut, addAccountStub } = await makeSut();
+    const addAccountSpy = jest.spyOn(addAccountStub, 'execute');
+    const request = {
+      body: {
+        name: 'anyname',
+        email: 'anyemail@mail.com',
+        password: 'anypassword',
+        confirmationPassword: 'anypassword',
+      },
+    };
+    await sut.handle(request);
+    expect(addAccountSpy).toHaveBeenCalledWith({
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      confirmationPassword: 'anypassword',
+    });
   });
 });
