@@ -38,14 +38,18 @@ export class SignupController extends BaseController<SignupModel.Params> {
 
       const { name, email, password, confirmationPassword } = request.body;
 
-      await this.addAccount.execute({
+      const useremail = await this.addAccount.execute({
         name,
         email,
         password,
         confirmationPassword,
       });
+
+      return {
+        statusCode: 201,
+        body: useremail,
+      };
     } catch (error) {
-      console.error(error);
       if (error instanceof UserAlreadyExistsError) {
         return unprocessableEntity(error);
       }
