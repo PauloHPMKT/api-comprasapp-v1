@@ -1,13 +1,21 @@
-import { Body, Controller } from '@nestjs/common';
+import { Body, Controller, Inject } from '@nestjs/common';
 import { BaseController } from '../../../../shared/presentation/protocols/Controller';
 import {
   HttpRequest,
   HttpResponse,
 } from '../../../../shared/presentation/http';
 import { SignupModel } from '../../domain/models/signup';
+import { AddAccount } from '../../domain/usecases/add-account';
 
 @Controller('signup')
 export class SignupController extends BaseController<SignupModel.Params> {
+  constructor(
+    @Inject('AddAccount')
+    private readonly addAccount: AddAccount,
+  ) {
+    super();
+  }
+
   async handle(
     @Body() request: HttpRequest<SignupModel.Params>,
   ): Promise<HttpResponse<string | Error>> {
@@ -25,5 +33,14 @@ export class SignupController extends BaseController<SignupModel.Params> {
         };
       }
     }
+
+    const { name, email, password, confirmationPassword } = request.body;
+
+    await this.addAccount.execute({
+      name,
+      email,
+      password,
+      confirmationPassword,
+    });
   }
 }
