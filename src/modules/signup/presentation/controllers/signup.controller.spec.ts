@@ -142,4 +142,22 @@ describe('AppController', () => {
     expect(response.statusCode).toBe(500);
     expect(response.body).toEqual(new Error('Internal server error'));
   });
+
+  it('should return 422 if User already exists', async () => {
+    const { sut, addAccountStub } = await makeSut();
+    jest.spyOn(addAccountStub, 'execute').mockImplementationOnce(() => {
+      throw new Error('User already exists');
+    });
+    const request = {
+      body: {
+        name: 'anyname',
+        email: 'anyemail@mail.com',
+        password: 'anypassword',
+        confirmationPassword: 'anypassword',
+      },
+    };
+    const response = await sut.handle(request);
+    expect(response.statusCode).toBe(422);
+    expect(response.body).toEqual(new Error('User already exists'));
+  });
 });
