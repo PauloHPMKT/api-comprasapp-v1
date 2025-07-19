@@ -4,6 +4,7 @@ import { AddAccount } from '../../domain/usecases/add-account';
 import { BaseController } from '@/shared/presentation/protocols/Controller';
 import {
   badRequest,
+  created,
   serverError,
   unprocessableEntity,
 } from '@/shared/presentation/helpers/http-response';
@@ -45,10 +46,7 @@ export class SignupController extends BaseController<SignupModel.Params> {
         confirmationPassword,
       });
 
-      return {
-        statusCode: 201,
-        body: useremail,
-      };
+      return created(useremail);
     } catch (error) {
       if (error instanceof UserAlreadyExistsError) {
         return unprocessableEntity(error);

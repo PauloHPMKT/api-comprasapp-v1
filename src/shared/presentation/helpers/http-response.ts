@@ -16,3 +16,8 @@ export const serverError = (): HttpResponse<Error> => ({
   statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
   body: new ServerError(),
 });
+
+export const created = <T = any>(data: T): HttpResponse<T> => ({
+  statusCode: HttpStatus.CREATED,
+  body: data,
+});
