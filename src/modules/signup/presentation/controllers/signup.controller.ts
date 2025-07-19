@@ -4,6 +4,7 @@ import { AddAccount } from '../../domain/usecases/add-account';
 import { BaseController } from '@/shared/presentation/protocols/Controller';
 import { badRequest } from '@/shared/presentation/helpers/http-response';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/http';
+import { MissingParamError } from '@/shared/presentation/errors/missing-param-error';
 
 @Controller('signup')
 export class SignupController extends BaseController<SignupModel.Params> {
@@ -26,7 +27,7 @@ export class SignupController extends BaseController<SignupModel.Params> {
     ];
     for (const field of requiredFields) {
       if (!request.body[field]) {
-        return badRequest(new Error(`Missing param ${field}`));
+        return badRequest(new MissingParamError(field));
       }
     }
 

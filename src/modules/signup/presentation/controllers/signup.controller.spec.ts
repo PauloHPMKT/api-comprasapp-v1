@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SignupController } from './signup.controller';
 import { SignupModel } from '../../domain/models/signup';
 import { AddAccount } from '../../domain/usecases/add-account';
+import { MissingParamError } from '@/shared/presentation/errors/missing-param-error';
 
 const makeAddAccountStub = (): AddAccount => {
   class AddAccountStub implements AddAccount {
@@ -54,7 +55,7 @@ describe('AppController', () => {
     };
     const response = await sut.handle(request);
     expect(response.statusCode).toBe(400);
-    expect(response.body).toEqual(new Error('Missing param name'));
+    expect(response.body).toEqual(new MissingParamError('name'));
   });
 
   it('should return 400 if no email is provided', async () => {
@@ -69,7 +70,7 @@ describe('AppController', () => {
     };
     const response = await sut.handle(request);
     expect(response.statusCode).toBe(400);
-    expect(response.body).toEqual(new Error('Missing param email'));
+    expect(response.body).toEqual(new MissingParamError('email'));
   });
 
   it('should return 400 if no password is provided', async () => {
@@ -84,7 +85,7 @@ describe('AppController', () => {
     };
     const response = await sut.handle(request);
     expect(response.statusCode).toBe(400);
-    expect(response.body).toEqual(new Error('Missing param password'));
+    expect(response.body).toEqual(new MissingParamError('password'));
   });
 
   it('should return 400 if no confirmationPassword is provided', async () => {
@@ -100,7 +101,7 @@ describe('AppController', () => {
     const response = await sut.handle(request);
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual(
-      new Error('Missing param confirmationPassword'),
+      new MissingParamError('confirmationPassword'),
     );
   });
 
