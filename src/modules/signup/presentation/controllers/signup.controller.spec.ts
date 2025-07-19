@@ -20,4 +20,18 @@ describe('AppController', () => {
     expect(sut).toBeInstanceOf(SignupController);
     expect(sut).toBeTruthy();
   });
+
+  it('should return 400 if no name is provided', async () => {
+    const { sut } = await makeSut();
+    const request = {
+      body: {
+        email: 'anyemail@mail.com',
+        password: 'anypassword',
+        confirmPassword: 'anypassword',
+      },
+    };
+    const response = await sut.handle(request);
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual(new Error('Missing param name'));
+  });
 });
