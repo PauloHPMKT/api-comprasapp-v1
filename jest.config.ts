@@ -5,9 +5,9 @@ const config: Config = {
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/**/index.ts',
-    '!<rootDir>/src/**/*.module.ts',
-    '!<rootDir>/src/domain/**',
     '!<rootDir>/src/main/**',
+    '!<rootDir>/src/**/*.module.ts',
+    '!<rootDir>/src/modules/**/domain/providers/**',
   ],
   moduleFileExtensions: ['js', 'json', 'ts'],
   coverageDirectory: 'coverage',
