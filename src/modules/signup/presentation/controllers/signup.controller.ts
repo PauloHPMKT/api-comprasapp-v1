@@ -8,8 +8,7 @@ import {
   unprocessableEntity,
 } from '@/shared/presentation/helpers/http-response';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/http';
-import { MissingParamError } from '@/shared/presentation/errors/missing-param-error';
-import { UserAlreadyExistsError } from '@/shared/presentation/errors/user-already-exists-error';
+import { MissingParamError, UserAlreadyExistsError } from '@/shared/errors';
 
 @Controller('signup')
 export class SignupController extends BaseController<SignupModel.Params> {

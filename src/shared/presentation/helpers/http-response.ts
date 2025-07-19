@@ -1,6 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 import { HttpResponse } from '../http';
-import { ServerError } from '../errors/server-error';
+import { ServerError } from '../../errors';
 
 export const badRequest = (error: Error): HttpResponse<Error> => ({
   statusCode: HttpStatus.BAD_REQUEST,

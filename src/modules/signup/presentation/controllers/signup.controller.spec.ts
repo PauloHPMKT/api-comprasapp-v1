@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SignupController } from './signup.controller';
 import { SignupModel } from '../../domain/models/signup';
 import { AddAccount } from '../../domain/usecases/add-account';
-import { MissingParamError } from '@/shared/presentation/errors/missing-param-error';
-import { UserAlreadyExistsError } from '@/shared/presentation/errors/user-already-exists-error';
-import { ServerError } from '@/shared/presentation/errors/server-error';
+import { MissingParamError } from '@/shared/errors/missing-param-error';
+import { UserAlreadyExistsError } from '@/shared/errors/user-already-exists-error';
+import { ServerError } from '@/shared/errors/server-error';
 
 const makeAddAccountStub = (): AddAccount => {
   class AddAccountStub implements AddAccount {
