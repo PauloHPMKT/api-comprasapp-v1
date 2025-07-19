@@ -2,7 +2,10 @@ import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { SignupModel } from '../../domain/models/signup';
 import { AddAccount } from '../../domain/usecases/add-account';
 import { BaseController } from '@/shared/presentation/protocols/Controller';
-import { badRequest } from '@/shared/presentation/helpers/http-response';
+import {
+  badRequest,
+  unprocessableEntity,
+} from '@/shared/presentation/helpers/http-response';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/http';
 import { MissingParamError } from '@/shared/presentation/errors/missing-param-error';
 import { UserAlreadyExistsError } from '@/shared/presentation/errors/user-already-exists-error';
@@ -44,10 +47,7 @@ export class SignupController extends BaseController<SignupModel.Params> {
     } catch (error) {
       console.error(error);
       if (error instanceof UserAlreadyExistsError) {
-        return {
-          statusCode: 422,
-          body: error,
-        };
+        return unprocessableEntity(error);
       }
       return {
         statusCode: 500,
