@@ -1,34 +1,29 @@
 import { Body, Controller } from '@nestjs/common';
+import { BaseController } from '../../../../shared/presentation/protocols/Controller';
+import {
+  HttpRequest,
+  HttpResponse,
+} from '../../../../shared/presentation/http';
+import { SignupModel } from '../../domain/models/signup';
 
 @Controller('signup')
-export class SignupController {
-  async handle(@Body() request: any): Promise<any> {
-    if (!request.body.name) {
-      return {
-        statusCode: 400,
-        body: new Error('Missing param name'),
-      };
-    }
-
-    if (!request.body.email) {
-      return {
-        statusCode: 400,
-        body: new Error('Missing param email'),
-      };
-    }
-
-    if (!request.body.password) {
-      return {
-        statusCode: 400,
-        body: new Error('Missing param password'),
-      };
-    }
-
-    if (!request.body.confirmationPassword) {
-      return {
-        statusCode: 400,
-        body: new Error('Missing param confirmationPassword'),
-      };
+export class SignupController extends BaseController<SignupModel.Params> {
+  async handle(
+    @Body() request: HttpRequest<SignupModel.Params>,
+  ): Promise<HttpResponse<string | Error>> {
+    const requiredFields = [
+      'name',
+      'email',
+      'password',
+      'confirmationPassword',
+    ];
+    for (const field of requiredFields) {
+      if (!request.body[field]) {
+        return {
+          statusCode: 400,
+          body: new Error(`Missing param ${field}`),
+        };
+      }
     }
   }
 }

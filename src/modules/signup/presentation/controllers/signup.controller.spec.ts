@@ -25,9 +25,10 @@ describe('AppController', () => {
     const { sut } = await makeSut();
     const request = {
       body: {
+        name: undefined,
         email: 'anyemail@mail.com',
         password: 'anypassword',
-        confirmPassword: 'anypassword',
+        confirmationPassword: 'anypassword',
       },
     };
     const response = await sut.handle(request);
@@ -40,8 +41,9 @@ describe('AppController', () => {
     const request = {
       body: {
         name: 'anyname',
+        email: undefined,
         password: 'anypassword',
-        confirmPassword: 'anypassword',
+        confirmationPassword: 'anypassword',
       },
     };
     const response = await sut.handle(request);
@@ -55,7 +57,8 @@ describe('AppController', () => {
       body: {
         name: 'anyname',
         email: 'anyemail@mail.com',
-        confirmPassword: 'anypassword',
+        password: undefined,
+        confirmationPassword: 'anypassword',
       },
     };
     const response = await sut.handle(request);
@@ -70,6 +73,7 @@ describe('AppController', () => {
         name: 'anyname',
         email: 'anyemail@mail.com',
         password: 'anypassword',
+        confirmationPassword: undefined,
       },
     };
     const response = await sut.handle(request);
