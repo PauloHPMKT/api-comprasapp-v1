@@ -124,4 +124,22 @@ describe('AppController', () => {
       confirmationPassword: 'anypassword',
     });
   });
+
+  it('should return 500 if AddAccount throws', async () => {
+    const { sut, addAccountStub } = await makeSut();
+    jest.spyOn(addAccountStub, 'execute').mockImplementationOnce(() => {
+      throw new Error('Internal server error');
+    });
+    const request = {
+      body: {
+        name: 'anyname',
+        email: 'anyemail@mail.com',
+        password: 'anypassword',
+        confirmationPassword: 'anypassword',
+      },
+    };
+    const response = await sut.handle(request);
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toEqual(new Error('Internal server error'));
+  });
 });
