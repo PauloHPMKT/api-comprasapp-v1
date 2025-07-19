@@ -4,6 +4,7 @@ import { SignupModel } from '../../domain/models/signup';
 import { AddAccount } from '../../domain/usecases/add-account';
 import { MissingParamError } from '@/shared/presentation/errors/missing-param-error';
 import { UserAlreadyExistsError } from '@/shared/presentation/errors/user-already-exists-error';
+import { ServerError } from '@/shared/presentation/errors/server-error';
 
 const makeAddAccountStub = (): AddAccount => {
   class AddAccountStub implements AddAccount {
@@ -141,7 +142,7 @@ describe('AppController', () => {
     };
     const response = await sut.handle(request);
     expect(response.statusCode).toBe(500);
-    expect(response.body).toEqual(new Error('Internal server error'));
+    expect(response.body).toEqual(new ServerError());
   });
 
   it('should return 422 if User already exists', async () => {

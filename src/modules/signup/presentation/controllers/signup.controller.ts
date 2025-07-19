@@ -9,6 +9,7 @@ import {
 import { HttpRequest, HttpResponse } from '@/shared/presentation/http';
 import { MissingParamError } from '@/shared/presentation/errors/missing-param-error';
 import { UserAlreadyExistsError } from '@/shared/presentation/errors/user-already-exists-error';
+import { ServerError } from '@/shared/presentation/errors/server-error';
 
 @Controller('signup')
 export class SignupController extends BaseController<SignupModel.Params> {
@@ -51,7 +52,7 @@ export class SignupController extends BaseController<SignupModel.Params> {
       }
       return {
         statusCode: 500,
-        body: new Error('Internal server error'),
+        body: new ServerError(),
       };
     }
   }
