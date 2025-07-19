@@ -4,12 +4,12 @@ import { AddAccount } from '../../domain/usecases/add-account';
 import { BaseController } from '@/shared/presentation/protocols/Controller';
 import {
   badRequest,
+  serverError,
   unprocessableEntity,
 } from '@/shared/presentation/helpers/http-response';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/http';
 import { MissingParamError } from '@/shared/presentation/errors/missing-param-error';
 import { UserAlreadyExistsError } from '@/shared/presentation/errors/user-already-exists-error';
-import { ServerError } from '@/shared/presentation/errors/server-error';
 
 @Controller('signup')
 export class SignupController extends BaseController<SignupModel.Params> {
@@ -50,10 +50,7 @@ export class SignupController extends BaseController<SignupModel.Params> {
       if (error instanceof UserAlreadyExistsError) {
         return unprocessableEntity(error);
       }
-      return {
-        statusCode: 500,
-        body: new ServerError(),
-      };
+      return serverError();
     }
   }
 }
