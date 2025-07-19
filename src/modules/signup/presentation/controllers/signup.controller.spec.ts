@@ -62,4 +62,20 @@ describe('AppController', () => {
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual(new Error('Missing param password'));
   });
+
+  it('should return 400 if no confirmationPassword is provided', async () => {
+    const { sut } = await makeSut();
+    const request = {
+      body: {
+        name: 'anyname',
+        email: 'anyemail@mail.com',
+        password: 'anypassword',
+      },
+    };
+    const response = await sut.handle(request);
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual(
+      new Error('Missing param confirmationPassword'),
+    );
+  });
 });
