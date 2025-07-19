@@ -1,11 +1,9 @@
-import { Body, Controller, Inject } from '@nestjs/common';
-import { BaseController } from '../../../../shared/presentation/protocols/Controller';
-import {
-  HttpRequest,
-  HttpResponse,
-} from '../../../../shared/presentation/http';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { SignupModel } from '../../domain/models/signup';
 import { AddAccount } from '../../domain/usecases/add-account';
+import { BaseController } from '@/shared/presentation/protocols/Controller';
+import { badRequest } from '@/shared/presentation/helpers/http-response';
+import { HttpRequest, HttpResponse } from '@/shared/presentation/http';
 
 @Controller('signup')
 export class SignupController extends BaseController<SignupModel.Params> {
@@ -16,6 +14,7 @@ export class SignupController extends BaseController<SignupModel.Params> {
     super();
   }
 
+  @Post()
   async handle(
     @Body() request: HttpRequest<SignupModel.Params>,
   ): Promise<HttpResponse<string | Error>> {
@@ -27,10 +26,7 @@ export class SignupController extends BaseController<SignupModel.Params> {
     ];
     for (const field of requiredFields) {
       if (!request.body[field]) {
-        return {
-          statusCode: 400,
-          body: new Error(`Missing param ${field}`),
-        };
+        return badRequest(new Error(`Missing param ${field}`));
       }
     }
 
