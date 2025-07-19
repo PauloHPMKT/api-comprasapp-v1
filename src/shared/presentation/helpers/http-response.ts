@@ -7,8 +7,8 @@ export const badRequest = (error: Error): HttpResponse<Error> => ({
   body: error,
 });
 
-export const unprocessableEntity = (error: Error): HttpResponse<Error> => ({
-  statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+export const conflict = (error: Error): HttpResponse<Error> => ({
+  statusCode: HttpStatus.CONFLICT,
   body: error,
 });
 

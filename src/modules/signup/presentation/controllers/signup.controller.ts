@@ -4,9 +4,9 @@ import { AddAccount } from '../../domain/usecases/add-account';
 import { BaseController } from '@/shared/presentation/protocols/Controller';
 import {
   badRequest,
+  conflict,
   created,
   serverError,
-  unprocessableEntity,
 } from '@/shared/presentation/helpers/http-response';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/http';
 import { MissingParamError, UserAlreadyExistsError } from '@/shared/errors';
@@ -50,7 +50,7 @@ export class SignupController extends BaseController<SignupModel.Params> {
     } catch (error) {
       console.error(error);
       if (error instanceof UserAlreadyExistsError) {
-        return unprocessableEntity(error);
+        return conflict(error);
       }
       return serverError();
     }

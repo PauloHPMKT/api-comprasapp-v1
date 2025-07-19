@@ -145,7 +145,7 @@ describe('AppController', () => {
     expect(response.body).toEqual(new ServerError());
   });
 
-  it('should return 422 if User already exists', async () => {
+  it('should return 409 if User already exists', async () => {
     const { sut, addAccountStub } = await makeSut();
     jest.spyOn(addAccountStub, 'execute').mockImplementationOnce(() => {
       throw new UserAlreadyExistsError();
@@ -159,7 +159,7 @@ describe('AppController', () => {
       },
     };
     const response = await sut.handle(request);
-    expect(response.statusCode).toBe(422);
+    expect(response.statusCode).toBe(409);
     expect(response.body).toEqual(new UserAlreadyExistsError());
   });
 
