@@ -162,4 +162,20 @@ describe('AppController', () => {
     expect(response.statusCode).toBe(422);
     expect(response.body).toEqual(new UserAlreadyExistsError());
   });
+
+  it('should return 201 if account is created successfully', async () => {
+    const { sut } = await makeSut();
+    const request = {
+      body: {
+        name: 'anyname',
+        email: 'anyemail@mail.com',
+        password: 'anypassword',
+        confirmationPassword: 'anypassword',
+      },
+    };
+    const response = await sut.handle(request);
+    expect(response.statusCode).toBe(201);
+    expect(response.body).toEqual('valid_email@mail.com');
+    expect(typeof response.body).toBe('string');
+  });
 });
