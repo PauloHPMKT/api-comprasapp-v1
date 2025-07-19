@@ -34,4 +34,18 @@ describe('AppController', () => {
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual(new Error('Missing param name'));
   });
+
+  it('should return 400 if no email is provided', async () => {
+    const { sut } = await makeSut();
+    const request = {
+      body: {
+        name: 'anyname',
+        password: 'anypassword',
+        confirmPassword: 'anypassword',
+      },
+    };
+    const response = await sut.handle(request);
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual(new Error('Missing param email'));
+  });
 });
