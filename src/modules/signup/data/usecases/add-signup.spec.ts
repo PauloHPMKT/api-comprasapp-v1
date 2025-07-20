@@ -43,4 +43,17 @@ describe('AddSignupUseCase', () => {
       .mockResolvedValueOnce(true);
     await expect(sut.execute(params)).rejects.toThrow(UserAlreadyExistsError);
   });
+
+  it('should call IsExistsUserRepositoryPort with correct email', async () => {
+    const { sut, isExistsUserRepositoryStub } = makeSut();
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      confirmationPassword: 'anypassword',
+    };
+    const existsSpy = jest.spyOn(isExistsUserRepositoryStub, 'exists');
+    await sut.execute(params);
+    expect(existsSpy).toHaveBeenCalledWith('anyemail@mail.com');
+  });
 });
