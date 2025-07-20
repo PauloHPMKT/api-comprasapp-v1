@@ -18,6 +18,10 @@ export class AddSignupUseCase implements AddAccount {
     );
     if (isUserExists) throw new UserAlreadyExistsError();
 
+    if (params.password !== params.confirmationPassword) {
+      throw new Error('Password and confirmation password do not match');
+    }
+
     // criar instancia de Account
 
     console.log(params);
