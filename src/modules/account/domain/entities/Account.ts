@@ -1,3 +1,5 @@
+import { randomBytes } from 'crypto';
+
 type AccountProps = {
   plan?: Account.Plan;
   isActive?: boolean;
@@ -6,7 +8,12 @@ type AccountProps = {
   createdAt?: Date;
 };
 export class Account {
-  constructor(public readonly props: AccountProps) {
+  public readonly id: string;
+  constructor(
+    public readonly props: AccountProps,
+    id?: string,
+  ) {
+    this.id = id || randomBytes(16).toString('hex');
     this.props.plan = props.plan || Account.Plan.FREE;
     this.props.isActive = props.isActive ?? true;
     this.props.userId = props.userId ?? null;
