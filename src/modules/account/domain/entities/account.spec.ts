@@ -1,7 +1,10 @@
 import { Account } from './Account';
 
 const makeSut = (): Account => {
-  return new Account({});
+  const props = {
+    password: 'valid_password',
+  };
+  return new Account(props);
 };
 
 describe('Account Entity', () => {
@@ -31,5 +34,11 @@ describe('Account Entity', () => {
     const sut = makeSut();
     expect(sut.props.createdAt).toBeDefined();
     expect(sut.props.createdAt).toBeInstanceOf(Date);
+  });
+
+  it('should create a new Account with a valid password', () => {
+    const sut = makeSut();
+    expect(sut.props.password).toBeDefined();
+    expect(sut.props.password).not.toBeNull();
   });
 });
