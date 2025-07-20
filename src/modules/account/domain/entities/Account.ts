@@ -2,6 +2,7 @@ type AccountProps = {
   plan?: Account.Plan;
   isActive?: boolean;
   userId?: string | null;
+  password: string;
   createdAt?: Date;
 };
 export class Account {
