@@ -15,4 +15,24 @@ describe('Object deepFreeze Utility', () => {
     const num = deepFreeze(42);
     expect(typeof num).toBe('number');
   });
+
+  it('should freeze an object and its nested objects', () => {
+    const obj = {
+      prop1: 'value1',
+      deep: { prop2: 'value2', prop3: new Date() },
+    };
+    const frozenObj = deepFreeze(obj);
+    expect(() => {
+      (obj as any).prop1 = 'test';
+    }).toThrow(
+      "Cannot assign to read only property 'prop1' of object '#<Object>'",
+    );
+    expect(Object.isFrozen(frozenObj)).toBe(true);
+    expect(() => {
+      (obj as any).deep.prop2 = 'test';
+    }).toThrow(
+      "Cannot assign to read only property 'prop2' of object '#<Object>'",
+    );
+    expect(frozenObj.deep.prop3).toBeInstanceOf(Date);
+  });
 });
