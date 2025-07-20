@@ -1,13 +1,9 @@
 import { Password } from './Password';
 
-const makeSut = (): Password => {
-  return new Password();
-};
-
 describe('Password Value Object', () => {
-  it('should be defined', () => {
-    const sut = makeSut();
-    expect(sut).toBeDefined();
-    expect(sut).toBeInstanceOf(Password);
+  it('should throw error if password not match criteria', () => {
+    expect(() => new Password('123')).toThrow(
+      'Password must be at least 6 characters long',
+    );
   });
 });
