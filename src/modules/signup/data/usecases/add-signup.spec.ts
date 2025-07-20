@@ -56,4 +56,17 @@ describe('AddSignupUseCase', () => {
     await sut.execute(params);
     expect(existsSpy).toHaveBeenCalledWith('anyemail@mail.com');
   });
+
+  it('should thorw an error if password not match confirmationPassword', async () => {
+    const { sut } = makeSut();
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      confirmationPassword: 'anypassword2',
+    };
+    await expect(sut.execute(params)).rejects.toThrow(
+      'Password and confirmation password do not match',
+    );
+  });
 });
