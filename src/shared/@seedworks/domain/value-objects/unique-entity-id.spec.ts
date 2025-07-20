@@ -12,4 +12,10 @@ describe('UniqueEntityId', () => {
     const validateSpy = jest.spyOn(UniqueEntityId.prototype as any, 'validate');
     expect(validateSpy).not.toHaveBeenCalled();
   });
+
+  it('should create a valid UniqueEntityId with a random id', () => {
+    const uniqueEntityId = new UniqueEntityId('');
+    expect(uniqueEntityId.id).toMatch(/^[0-9a-f]{24}$/i);
+    expect(uniqueEntityId).toBeInstanceOf(UniqueEntityId);
+  });
 });
