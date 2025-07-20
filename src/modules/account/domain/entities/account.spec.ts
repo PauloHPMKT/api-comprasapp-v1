@@ -21,4 +21,9 @@ describe('Account Entity', () => {
     expect(sut.props.isActive).toBe(true);
     expect(sut.props.isActive).not.toBe(false);
   });
+
+  it('should create a new Account with userId null', () => {
+    const sut = makeSut();
+    expect(sut.props.userId).toBeNull();
+  });
 });
