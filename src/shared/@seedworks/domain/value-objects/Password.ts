@@ -15,6 +15,7 @@ export class Password {
   }
 
   get value(): string {
+    console.log('Getting password value:', this._value);
     return this._value;
   }
 }
