@@ -1,10 +1,11 @@
+import UniqueEntityId from '@/shared/@seedworks/domain/value-objects/unique-entity-id';
 import { Account } from './Account';
 
 const makeSut = (): Account => {
   const props = {
     password: 'valid_password',
   };
-  const id = 'valid_id';
+  const id = new UniqueEntityId('507f1f77bcf86cd799439011');
   return new Account(props, id);
 };
 
@@ -47,6 +48,6 @@ describe('Account Entity', () => {
     const sut = makeSut();
     expect(sut.id).toBeDefined();
     expect(sut.id).not.toBeNull();
-    expect(typeof sut.id).toBe('string');
+    expect(sut.id).toBeInstanceOf(UniqueEntityId);
   });
 });

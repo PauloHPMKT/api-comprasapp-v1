@@ -2,7 +2,7 @@ import { InvalidIdError } from '@/shared/errors/invalid-id-error';
 import { randomBytes } from 'crypto';
 
 export default class UniqueEntityId {
-  constructor(public readonly id: string) {
+  constructor(public readonly id?: string) {
     this.id = id || randomBytes(12).toString('hex');
     this.validate();
   }

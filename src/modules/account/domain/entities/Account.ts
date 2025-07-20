@@ -1,4 +1,4 @@
-import { randomBytes } from 'crypto';
+import UniqueEntityId from '@/shared/@seedworks/domain/value-objects/unique-entity-id';
 
 type AccountProps = {
   plan?: Account.Plan;
@@ -8,12 +8,12 @@ type AccountProps = {
   createdAt?: Date;
 };
 export class Account {
-  public readonly id: string;
+  public readonly id: UniqueEntityId;
   constructor(
     public readonly props: AccountProps,
-    id?: string,
+    id?: UniqueEntityId,
   ) {
-    this.id = id || randomBytes(16).toString('hex');
+    this.id = id || new UniqueEntityId();
     this.props.plan = props.plan || Account.Plan.FREE;
     this.props.isActive = props.isActive ?? true;
     this.props.userId = props.userId ?? null;
@@ -27,3 +27,9 @@ export namespace Account {
     PREMIUM = 'premium',
   }
 }
+
+console.log(
+  new Account({
+    password: 'secure_password',
+  }),
+);
