@@ -15,4 +15,10 @@ describe('Account Entity', () => {
     const sut = makeSut();
     expect(sut.props.plan).toEqual('free');
   });
+
+  it('should create a new Account with active status as default', () => {
+    const sut = makeSut();
+    expect(sut.props.isActive).toBe(true);
+    expect(sut.props.isActive).not.toBe(false);
+  });
 });
