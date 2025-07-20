@@ -18,4 +18,11 @@ describe('UniqueEntityId', () => {
     expect(uniqueEntityId.id).toMatch(/^[0-9a-f]{24}$/i);
     expect(uniqueEntityId).toBeInstanceOf(UniqueEntityId);
   });
+
+  it('sould test if validate method was called once', () => {
+    const validateSpy = jest.spyOn(UniqueEntityId.prototype as any, 'validate');
+    expect(() => new UniqueEntityId('fake id')).toThrow(new InvalidIdError());
+    expect(validateSpy).toHaveBeenCalledTimes(1);
+    expect(validateSpy).toHaveBeenCalled();
+  });
 });
