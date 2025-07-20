@@ -1,9 +1,11 @@
 type AccountProps = {
   plan?: Account.Plan;
+  isActive?: boolean;
 };
 export class Account {
   constructor(public readonly props: AccountProps) {
     this.props.plan = props.plan || Account.Plan.FREE;
+    this.props.isActive = props.isActive ?? true;
   }
 }
 
