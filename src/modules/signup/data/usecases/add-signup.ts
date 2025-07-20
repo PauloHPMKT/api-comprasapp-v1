@@ -17,9 +17,9 @@ export class AddSignupUseCase implements AddAccount {
       params.email,
     );
     if (isUserExists) throw new UserAlreadyExistsError();
-    // ver se a senha ta igual a confirmação
 
-    // criar as instancias nas entidades User e Account
+    // criar instancia de Account
+
     console.log(params);
     return 'valid_email@mail.com';
   }
