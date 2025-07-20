@@ -4,7 +4,8 @@ const makeSut = (): Account => {
   const props = {
     password: 'valid_password',
   };
-  return new Account(props);
+  const id = 'valid_id';
+  return new Account(props, id);
 };
 
 describe('Account Entity', () => {
@@ -40,5 +41,12 @@ describe('Account Entity', () => {
     const sut = makeSut();
     expect(sut.props.password).toBeDefined();
     expect(sut.props.password).not.toBeNull();
+  });
+
+  it('should create a new Account with a valid unique id', () => {
+    const sut = makeSut();
+    expect(sut.id).toBeDefined();
+    expect(sut.id).not.toBeNull();
+    expect(typeof sut.id).toBe('string');
   });
 });
