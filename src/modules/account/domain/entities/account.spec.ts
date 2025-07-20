@@ -26,4 +26,10 @@ describe('Account Entity', () => {
     const sut = makeSut();
     expect(sut.props.userId).toBeNull();
   });
+
+  it('should create a new Account with a valid Date', () => {
+    const sut = makeSut();
+    expect(sut.props.createdAt).toBeDefined();
+    expect(sut.props.createdAt).toBeInstanceOf(Date);
+  });
 });
