@@ -7,4 +7,9 @@ describe('UniqueEntityId', () => {
       new InvalidIdError('id must be a valid unique entity id'),
     );
   });
+
+  it('should test if validate method is not called', () => {
+    const validateSpy = jest.spyOn(UniqueEntityId.prototype as any, 'validate');
+    expect(validateSpy).not.toHaveBeenCalled();
+  });
 });
