@@ -1,5 +1,5 @@
 import { UserAlreadyExistsError } from '@/shared/errors';
-import { IsExistsUserRepositoryPort } from '../../../user/domain/ports/is-exists-user.repository';
+import { IsExistsUserRepositoryPort } from '@/modules/user/domain/ports/is-exists-user.repository';
 import { AddSignupUseCase } from './add-signup';
 import { EncrypterPort } from '@/modules/encrypter/domain/ports/encrypter.port';
 
