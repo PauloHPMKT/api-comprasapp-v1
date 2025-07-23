@@ -48,6 +48,6 @@ describe('Account Entity', () => {
     const sut = makeSut();
     expect(sut.id).toBeDefined();
     expect(sut.id).not.toBeNull();
-    expect(sut.id).toBeInstanceOf(UniqueEntityId);
+    expect(sut.uniqueEntityId).toBeInstanceOf(UniqueEntityId);
   });
 });
