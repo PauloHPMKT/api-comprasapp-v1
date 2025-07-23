@@ -1,6 +1,17 @@
 import { UserAlreadyExistsError } from '@/shared/errors';
 import { IsExistsUserRepositoryPort } from '../../../user/domain/ports/is-exists-user.repository';
 import { AddSignupUseCase } from './add-signup';
+import { EncrypterPort } from '@/modules/encrypter/domain/ports/encrypter.port';
+
+const makeEncrypter = (): EncrypterPort => {
+  class EncrypterStub implements EncrypterPort {
+    async hash(value: string): Promise<string> {
+      console.log(value);
+      return 'hashed_value';
+    }
+  }
+  return new EncrypterStub();
+};
 
 const makeIsExistsUserRepository = (): IsExistsUserRepositoryPort => {
   class IsExistsUserRepositoryStub implements IsExistsUserRepositoryPort {
@@ -13,14 +24,16 @@ const makeIsExistsUserRepository = (): IsExistsUserRepositoryPort => {
 };
 
 const makeSut = (): SutTypes => {
+  const encrypterStub = makeEncrypter();
   const isExistsUserRepositoryStub = makeIsExistsUserRepository();
-  const sut = new AddSignupUseCase(isExistsUserRepositoryStub);
-  return { sut, isExistsUserRepositoryStub };
+  const sut = new AddSignupUseCase(isExistsUserRepositoryStub, encrypterStub);
+  return { sut, isExistsUserRepositoryStub, encrypterStub };
 };
 
 type SutTypes = {
   sut: AddSignupUseCase;
   isExistsUserRepositoryStub: IsExistsUserRepositoryPort;
+  encrypterStub: EncrypterPort;
 };
 
 describe('AddSignupUseCase', () => {
@@ -68,5 +81,18 @@ describe('AddSignupUseCase', () => {
     await expect(sut.execute(params)).rejects.toThrow(
       'Password and confirmation password do not match',
     );
+  });
+
+  it('should call Encrypter with correct password', async () => {
+    const { sut, encrypterStub } = makeSut();
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      confirmationPassword: 'anypassword',
+    };
+    const hashSpy = jest.spyOn(encrypterStub, 'hash');
+    await sut.execute(params);
+    expect(hashSpy).toHaveBeenCalledWith('anypassword');
   });
 });
