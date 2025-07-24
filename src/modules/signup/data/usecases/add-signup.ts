@@ -25,7 +25,6 @@ export class AddSignupUseCase implements AddAccount {
       name: params.name,
       email: params.email,
     });
-    console.log(email, id);
 
     const hashedPassword = await this.encrypterPort.hash(params.password);
 
@@ -34,7 +33,6 @@ export class AddSignupUseCase implements AddAccount {
       password: hashedPassword,
     });
 
-    console.log(params);
-    return 'valid_email@mail.com';
+    return email;
   }
 }
