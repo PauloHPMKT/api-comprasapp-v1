@@ -1,7 +1,6 @@
-import { Provider } from '@nestjs/common';
 import {
-  CreateUserPort,
   CreateUserModel,
+  CreateUserPort,
 } from '../../domain/ports/create-user-port';
 
 export class CreateUserUseCase implements CreateUserPort {
@@ -20,10 +19,3 @@ export class CreateUserUseCase implements CreateUserPort {
     };
   }
 }
-
-export const makeUseCaseProviders = (): Provider[] => [
-  {
-    provide: 'CreateUserPort',
-    useClass: CreateUserUseCase,
-  },
-];
