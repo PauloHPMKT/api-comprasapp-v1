@@ -8,19 +8,20 @@ const makeMocks = () => ({
       id: 'valid_id',
     }),
   },
+  encrypterStub: {
+    hash: jest.fn().mockResolvedValue('hashed_password'),
+  },
 });
 
 const makeSut = async (): Promise<SutTypes> => {
-  const { createUserStub } = makeMocks();
+  const { createUserStub, encrypterStub } = makeMocks();
 
   const moduleRef: TestingModule = await Test.createTestingModule({
     providers: [
       AddSignupUseCase,
       {
         provide: 'EncrypterPort',
-        useValue: {
-          hash: jest.fn().mockResolvedValue('hashed_password'),
-        },
+        useValue: encrypterStub,
       },
       {
         provide: 'CreateUserPort',
@@ -29,12 +30,13 @@ const makeSut = async (): Promise<SutTypes> => {
     ],
   }).compile();
   const sut = moduleRef.get<AddSignupUseCase>(AddSignupUseCase);
-  return { sut, createUserStub };
+  return { sut, createUserStub, encrypterStub };
 };
 
 type SutTypes = {
   sut: AddSignupUseCase;
   createUserStub: { execute: jest.Mock };
+  encrypterStub: { hash: jest.Mock };
 };
 
 describe('AddSignupUseCase', () => {
@@ -88,5 +90,18 @@ describe('AddSignupUseCase', () => {
     const result = await createUserStub.execute(params);
     expect(result).toHaveProperty('id', 'valid_id');
     expect(result).toHaveProperty('email', 'valid_email@mail.com');
+  });
+
+  it('should call EncrypterPort with correct password', async () => {
+    const { sut, encrypterStub } = await makeSut();
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      confirmationPassword: 'anypassword',
+    };
+    const encrypterSpy = jest.spyOn(encrypterStub, 'hash');
+    await sut.execute(params);
+    expect(encrypterSpy).toHaveBeenCalledWith('anypassword');
   });
 });

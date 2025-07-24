@@ -25,13 +25,6 @@ export class AddSignupUseCase implements AddAccount {
       confirmationPassword: params.confirmationPassword,
     });
     console.log(email, id);
-    // tem que retornar o email
-
-    // chama o caso de uso do usuario para criar o usuário
-    // const isUserExists = await this.isExistsUserRepositoryPort.exists(
-    //   params.email,
-    // );
-    // if (isUserExists) throw new UserAlreadyExistsError();
 
     await this.encrypterPort.hash(params.password);
 
