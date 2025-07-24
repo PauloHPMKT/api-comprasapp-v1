@@ -3,7 +3,10 @@ import { AddSignupUseCase } from './add-signup';
 
 const makeMocks = () => ({
   createUserStub: {
-    execute: jest.fn().mockResolvedValue('valid_email@mail.com'),
+    execute: jest.fn().mockResolvedValue({
+      email: 'valid_email@mail.com',
+      id: 'valid_id',
+    }),
   },
 });
 
@@ -74,14 +77,16 @@ describe('AddSignupUseCase', () => {
   });
 
   it('should return an object with email and id from CreateUserPort', async () => {
-    const { sut } = await makeSut();
+    const { sut, createUserStub } = await makeSut();
     const params = {
       name: 'anyname',
       email: 'anyemail@mail.com',
       password: 'anypassword',
       confirmationPassword: 'anypassword',
     };
-    const result = await sut.execute(params);
-    expect(result).toEqual('valid_email@mail.com');
+    await sut.execute(params);
+    const result = await createUserStub.execute(params);
+    expect(result).toHaveProperty('id', 'valid_id');
+    expect(result).toHaveProperty('email', 'valid_email@mail.com');
   });
 });
