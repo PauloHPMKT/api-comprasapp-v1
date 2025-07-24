@@ -1,30 +1,37 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AddSignupUseCase } from './add-signup';
 
+const makeMocks = () => ({
+  createUserStub: {
+    execute: jest.fn().mockResolvedValue('valid_email@mail.com'),
+  },
+});
+
 const makeSut = async (): Promise<SutTypes> => {
+  const { createUserStub } = makeMocks();
+
   const moduleRef: TestingModule = await Test.createTestingModule({
     providers: [
       AddSignupUseCase,
-      {
-        provide: 'IsExistsUserRepositoryPort',
-        useValue: {
-          exists: jest.fn().mockResolvedValue(false),
-        },
-      },
       {
         provide: 'EncrypterPort',
         useValue: {
           hash: jest.fn().mockResolvedValue('hashed_password'),
         },
       },
+      {
+        provide: 'CreateUserPort',
+        useValue: createUserStub,
+      },
     ],
   }).compile();
   const sut = moduleRef.get<AddSignupUseCase>(AddSignupUseCase);
-  return { sut };
+  return { sut, createUserStub };
 };
 
 type SutTypes = {
   sut: AddSignupUseCase;
+  createUserStub: { execute: jest.Mock };
 };
 
 describe('AddSignupUseCase', () => {
@@ -46,5 +53,23 @@ describe('AddSignupUseCase', () => {
     await expect(sut.execute(params)).rejects.toThrow(
       'Password and confirmation password do not match',
     );
+  });
+
+  it('should call CreateUser with correct params', async () => {
+    const { sut, createUserStub } = await makeSut();
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      confirmationPassword: 'anypassword',
+    };
+    const createUserSpy = jest.spyOn(createUserStub, 'execute');
+    await sut.execute(params);
+    expect(createUserSpy).toHaveBeenCalledWith({
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      confirmationPassword: 'anypassword',
+    });
   });
 });
