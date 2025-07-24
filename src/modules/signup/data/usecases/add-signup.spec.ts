@@ -34,4 +34,17 @@ describe('AddSignupUseCase', () => {
     expect(sut).toBeInstanceOf(AddSignupUseCase);
     expect(sut).toBeTruthy();
   });
+
+  it('should thorw an error if password not match confirmationPassword', async () => {
+    const { sut } = await makeSut();
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      confirmationPassword: 'anypassword2',
+    };
+    await expect(sut.execute(params)).rejects.toThrow(
+      'Password and confirmation password do not match',
+    );
+  });
 });
