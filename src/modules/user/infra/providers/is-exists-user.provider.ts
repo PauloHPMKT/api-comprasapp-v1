@@ -1,5 +1,5 @@
 import { Provider } from '@nestjs/common';
-import { UserRepository } from '../../domain/ports/is-exists-user.repository';
+import { UserRepository } from '../../data/ports/is-exists-user.repository';
 
 export const makeIsExistsUserProvider = (): Provider[] => [
   {

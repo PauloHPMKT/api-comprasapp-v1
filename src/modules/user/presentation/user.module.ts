@@ -1,7 +1,7 @@
 import { Module, Provider } from '@nestjs/common';
-import { makeIsExistsUserProvider } from '../infra/providers/is-exists-user.provider';
+import { makeUseCaseProviders } from '../infra/providers/usecases.providers';
 
-const providers: Provider[] = [...makeIsExistsUserProvider()];
+const providers: Provider[] = [...makeUseCaseProviders()];
 
 @Module({
   controllers: [],

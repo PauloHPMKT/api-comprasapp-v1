@@ -1,15 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { SignupModel } from '../../domain/models/signup';
 import { AddAccount } from '../../domain/usecases/add-account';
-import { IsExistsUserRepositoryPort } from '@/modules/user/domain/ports/is-exists-user.repository';
-import { UserAlreadyExistsError } from '@/shared/errors';
 import { EncrypterPort } from '@/modules/encrypter/domain/ports/encrypter.port';
+import { CreateUserPort } from '@/modules/user/domain/ports/create-user-port';
 
 @Injectable()
 export class AddSignupUseCase implements AddAccount {
   constructor(
-    @Inject('IsExistsUserRepositoryPort')
-    private readonly isExistsUserRepositoryPort: IsExistsUserRepositoryPort,
+    @Inject('CreateUserPort')
+    private readonly createUserPort: CreateUserPort,
     @Inject('EncrypterPort')
     private readonly encrypterPort: EncrypterPort,
   ) {}
@@ -19,11 +18,17 @@ export class AddSignupUseCase implements AddAccount {
       throw new Error('Password and confirmation password do not match');
     }
 
+    await this.createUserPort.execute({
+      name: params.name,
+      email: params.email,
+      password: params.password,
+      confirmationPassword: params.confirmationPassword,
+    });
     // chama o caso de uso do usuario para criar o usuário
-    const isUserExists = await this.isExistsUserRepositoryPort.exists(
-      params.email,
-    );
-    if (isUserExists) throw new UserAlreadyExistsError();
+    // const isUserExists = await this.isExistsUserRepositoryPort.exists(
+    //   params.email,
+    // );
+    // if (isUserExists) throw new UserAlreadyExistsError();
 
     await this.encrypterPort.hash(params.password);
 
