@@ -21,8 +21,6 @@ export class AddSignupUseCase implements AddAccount {
     const { email, id } = await this.createUserPort.execute({
       name: params.name,
       email: params.email,
-      password: params.password,
-      confirmationPassword: params.confirmationPassword,
     });
     console.log(email, id);
 

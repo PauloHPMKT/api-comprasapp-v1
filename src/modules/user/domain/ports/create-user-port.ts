@@ -3,8 +3,6 @@ export namespace CreateUserModel {
   export type Params = {
     name: string;
     email: string;
-    password: string;
-    confirmationPassword: string;
   };
 
   export type Result = {

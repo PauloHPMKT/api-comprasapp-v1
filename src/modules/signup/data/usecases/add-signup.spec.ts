@@ -73,8 +73,6 @@ describe('AddSignupUseCase', () => {
     expect(createUserSpy).toHaveBeenCalledWith({
       name: 'anyname',
       email: 'anyemail@mail.com',
-      password: 'anypassword',
-      confirmationPassword: 'anypassword',
     });
   });
 
