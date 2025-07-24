@@ -84,6 +84,21 @@ describe('AddSignupUseCase', () => {
     });
   });
 
+  it('should throw an error if CreateUserPort throws an existant user', async () => {
+    const { sut, createUserStub } = await makeSut();
+    jest
+      .spyOn(createUserStub, 'execute')
+      .mockRejectedValue(new Error('User already exists'));
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      confirmationPassword: 'anypassword',
+    };
+    const promise = sut.execute(params);
+    await expect(promise).rejects.toThrow('User already exists');
+  });
+
   it('should return an object with email and id from CreateUserPort', async () => {
     const { sut, createUserStub } = await makeSut();
     const params = {
