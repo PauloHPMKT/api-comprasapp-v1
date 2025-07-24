@@ -8,13 +8,16 @@ const makeMocks = () => ({
       id: 'valid_id',
     }),
   },
+  createAccountStub: {
+    execute: jest.fn().mockResolvedValue(undefined),
+  },
   encrypterStub: {
     hash: jest.fn().mockResolvedValue('hashed_password'),
   },
 });
 
 const makeSut = async (): Promise<SutTypes> => {
-  const { createUserStub, encrypterStub } = makeMocks();
+  const { createUserStub, encrypterStub, createAccountStub } = makeMocks();
 
   const moduleRef: TestingModule = await Test.createTestingModule({
     providers: [
@@ -27,16 +30,21 @@ const makeSut = async (): Promise<SutTypes> => {
         provide: 'CreateUserPort',
         useValue: createUserStub,
       },
+      {
+        provide: 'CreateAccountPort',
+        useValue: createAccountStub,
+      },
     ],
   }).compile();
   const sut = moduleRef.get<AddSignupUseCase>(AddSignupUseCase);
-  return { sut, createUserStub, encrypterStub };
+  return { sut, createUserStub, encrypterStub, createAccountStub };
 };
 
 type SutTypes = {
   sut: AddSignupUseCase;
   createUserStub: { execute: jest.Mock };
   encrypterStub: { hash: jest.Mock };
+  createAccountStub: { execute: jest.Mock };
 };
 
 describe('AddSignupUseCase', () => {
@@ -101,5 +109,21 @@ describe('AddSignupUseCase', () => {
     const encrypterSpy = jest.spyOn(encrypterStub, 'hash');
     await sut.execute(params);
     expect(encrypterSpy).toHaveBeenCalledWith('anypassword');
+  });
+
+  it('should call CreateAccountPort with correct params', async () => {
+    const { sut, createAccountStub } = await makeSut();
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      confirmationPassword: 'anypassword',
+    };
+    const createAccountSpy = jest.spyOn(createAccountStub, 'execute');
+    await sut.execute(params);
+    expect(createAccountSpy).toHaveBeenCalledWith({
+      password: 'hashed_password',
+      userId: 'valid_id',
+    });
   });
 });
