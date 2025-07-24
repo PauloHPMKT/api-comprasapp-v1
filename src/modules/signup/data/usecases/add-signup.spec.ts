@@ -126,4 +126,16 @@ describe('AddSignupUseCase', () => {
       userId: 'valid_id',
     });
   });
+
+  it('should return the email on success', async () => {
+    const { sut } = await makeSut();
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      confirmationPassword: 'anypassword',
+    };
+    const email = await sut.execute(params);
+    expect(email).toBe('valid_email@mail.com');
+  });
 });
