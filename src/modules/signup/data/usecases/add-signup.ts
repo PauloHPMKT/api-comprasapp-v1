@@ -18,13 +18,14 @@ export class AddSignupUseCase implements AddAccount {
       throw new Error('Password and confirmation password do not match');
     }
 
-    await this.createUserPort.execute({
+    const { email, id } = await this.createUserPort.execute({
       name: params.name,
       email: params.email,
       password: params.password,
       confirmationPassword: params.confirmationPassword,
     });
-    // tem que retornar o email e o id do usuario criado
+    console.log(email, id);
+    // tem que retornar o email
 
     // chama o caso de uso do usuario para criar o usuário
     // const isUserExists = await this.isExistsUserRepositoryPort.exists(

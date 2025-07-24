@@ -5,9 +5,14 @@ import {
 } from '../../domain/ports/create-user-port';
 
 export class CreateUserUseCase implements CreateUserPort {
-  async execute(params: CreateUserModel.Params): Promise<string> {
+  async execute(
+    params: CreateUserModel.Params,
+  ): Promise<CreateUserModel.Result> {
     console.log(params);
-    return 'valid_email@mail.com';
+    return {
+      email: 'valid_email@mail.com',
+      id: 'valid_id',
+    };
   }
 }
 

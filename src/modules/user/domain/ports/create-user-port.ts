@@ -6,8 +6,13 @@ export namespace CreateUserModel {
     password: string;
     confirmationPassword: string;
   };
+
+  export type Result = {
+    email: string;
+    id: string;
+  };
 }
 
 export interface CreateUserPort {
-  execute(params: CreateUserModel.Params): Promise<string>;
+  execute(params: CreateUserModel.Params): Promise<CreateUserModel.Result>;
 }
