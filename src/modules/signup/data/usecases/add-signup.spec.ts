@@ -72,4 +72,16 @@ describe('AddSignupUseCase', () => {
       confirmationPassword: 'anypassword',
     });
   });
+
+  it('should return an object with email and id from CreateUserPort', async () => {
+    const { sut } = await makeSut();
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      confirmationPassword: 'anypassword',
+    };
+    const result = await sut.execute(params);
+    expect(result).toEqual('valid_email@mail.com');
+  });
 });
