@@ -14,8 +14,8 @@ describe('UniqueEntityId', () => {
   });
 
   it('should create a valid UniqueEntityId with a random id', () => {
-    const uniqueEntityId = new UniqueEntityId('');
-    expect(uniqueEntityId.id).toMatch(/^[0-9a-f]{24}$/i);
+    const uniqueEntityId = new UniqueEntityId();
+    expect(uniqueEntityId.value).toMatch(/^[0-9a-f]{24}$/i);
     expect(uniqueEntityId).toBeInstanceOf(UniqueEntityId);
   });
 
