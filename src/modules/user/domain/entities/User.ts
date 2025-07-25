@@ -1,3 +1,5 @@
+import UniqueEntityId from '@/shared/@seedworks/domain/value-objects/unique-entity-id';
+
 export type UserProps = {
   name: string;
   email: string;
@@ -6,7 +8,12 @@ export type UserProps = {
 };
 
 export class User {
-  constructor(public readonly props: UserProps) {
+  public readonly id: UniqueEntityId;
+  constructor(
+    public readonly props: UserProps,
+    id?: UniqueEntityId,
+  ) {
+    this.id = id ?? new UniqueEntityId();
     this.props.avatar = this.props.avatar ?? null;
     this.props.createdAt = this.props.createdAt ?? new Date();
   }
