@@ -1,5 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUserUseCase } from './create-user';
+import { User } from '../../domain/entities/User';
+
+jest.mock('../../domain/entities/user', () => {
+  return {
+    User: jest.fn().mockImplementation((props) => ({
+      ...props,
+      mocked: true,
+    })),
+  };
+});
 
 const makeMocks = () => ({
   isExistsUserRepositoryStub: {
@@ -48,5 +58,18 @@ describe('CreateUserUseCase', () => {
       .spyOn(isExistsUserRepositoryStub, 'exists')
       .mockResolvedValueOnce(true);
     await expect(sut.execute(params)).rejects.toThrow('User already exists');
+  });
+
+  it('should call User Entity with correct parameters', async () => {
+    const { sut } = await makeSut();
+    const params = {
+      name: 'Test User',
+      email: 'any_email@mail.com',
+    };
+    await sut.execute(params);
+    expect(User).toHaveBeenCalledWith({
+      name: 'Test User',
+      email: 'any_email@mail.com',
+    });
   });
 });
