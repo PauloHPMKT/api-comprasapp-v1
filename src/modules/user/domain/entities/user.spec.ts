@@ -46,8 +46,8 @@ describe('User Entity', () => {
 
   it('should create a user with a valid UniqueEntityId', () => {
     const sut = makeSut();
-    expect(sut.id).toBeInstanceOf(UniqueEntityId);
-    expect(sut.id.value).toBe('507f1f77bcf86cd799439011');
+    expect(sut.uniqueEntityId).toBeInstanceOf(UniqueEntityId);
+    expect(sut.id).toBe('507f1f77bcf86cd799439011');
     expect(sut.id).not.toBeNull();
   });
 });
