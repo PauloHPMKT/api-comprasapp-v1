@@ -1,10 +1,13 @@
 export type UserProps = {
   name: string;
   email: string;
+  avatar?: string | null;
 };
 
 export class User {
-  constructor(public readonly props: UserProps) {}
+  constructor(public readonly props: UserProps) {
+    this.props.avatar = this.props.avatar ?? null;
+  }
 }
 
 console.log(
