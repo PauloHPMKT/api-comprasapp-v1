@@ -24,5 +24,5 @@ console.log(
   new User({
     name: 'Test User',
     email: 'any_email@mail.com',
-  }),
+  }).toJSON(),
 );
