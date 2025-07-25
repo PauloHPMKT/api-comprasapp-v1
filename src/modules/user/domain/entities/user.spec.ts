@@ -27,4 +27,9 @@ describe('User Entity', () => {
     expect(sut.props.email).toBe('any_email@mail.com');
     expect(typeof sut.props.email).toBe('string');
   });
+
+  it('should create a user with avatar as null', () => {
+    const sut = makeSut();
+    expect(sut.props.avatar).toBeNull();
+  });
 });
