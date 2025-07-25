@@ -1,7 +1,10 @@
 import { User } from './User';
 
 const makeSut = (): User => {
-  return new User();
+  const props = {
+    name: 'Test User',
+  };
+  return new User(props);
 };
 
 describe('User Entity', () => {
@@ -10,5 +13,11 @@ describe('User Entity', () => {
     expect(sut).toBeDefined();
     expect(sut).toBeInstanceOf(User);
     expect(sut).toBeTruthy();
+  });
+
+  it('should able to create a user by name', () => {
+    const sut = makeSut();
+    expect(sut.props.name).toBe('Test User');
+    expect(typeof sut.props.name).toBe('string');
   });
 });
