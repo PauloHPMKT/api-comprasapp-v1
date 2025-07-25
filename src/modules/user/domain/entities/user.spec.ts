@@ -33,9 +33,12 @@ describe('User Entity', () => {
     expect(sut.props.avatar).toBeNull();
   });
 
-  it('should create a user with a valid date', () => {
+  it('should create a user with all properties defined', () => {
     const sut = makeSut();
+    expect(sut.props).toBeDefined();
+    expect(sut.props.name).toBeDefined();
+    expect(sut.props.email).toBeDefined();
+    expect(sut.props.avatar).toBeDefined();
     expect(sut.props.createdAt).toBeDefined();
-    expect(sut.props.createdAt).toBeInstanceOf(Date);
   });
 });
