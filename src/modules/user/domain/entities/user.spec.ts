@@ -1,8 +1,9 @@
-import { User } from './User';
+import { User, UserProps } from './User';
 
 const makeSut = (): User => {
-  const props = {
+  const props: UserProps = {
     name: 'Test User',
+    email: 'any_email@mail.com',
   };
   return new User(props);
 };
@@ -19,5 +20,11 @@ describe('User Entity', () => {
     const sut = makeSut();
     expect(sut.props.name).toBe('Test User');
     expect(typeof sut.props.name).toBe('string');
+  });
+
+  it('should have a valid email', () => {
+    const sut = makeSut();
+    expect(sut.props.email).toBe('any_email@mail.com');
+    expect(typeof sut.props.email).toBe('string');
   });
 });
