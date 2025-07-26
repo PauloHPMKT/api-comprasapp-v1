@@ -17,7 +17,7 @@ export class UserRepository
   ): Promise<CreateUserRepositoryModel.Result> {
     // Simulate user creation
     console.log(`Creating user with data: ${JSON.stringify(userData)}`);
-    return { id: '123', ...userData };
+    return { id: userData.id, email: userData.email };
   }
 }
 
@@ -27,7 +27,7 @@ export const makeUserRepositoryProviders = (): Provider[] => [
     useClass: UserRepository,
   },
   {
-    provide: 'CreateUserPort',
+    provide: 'CreateUserRepositoryPort',
     useClass: UserRepository,
   },
 ];
