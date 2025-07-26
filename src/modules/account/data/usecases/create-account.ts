@@ -1,9 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import {
-  AddAccountModel,
-  CreateAccountPort,
-} from '../../domain/ports/create-account.port';
+import { CreateAccountPort } from '../../domain/ports/create-account.port';
 import { IsActiveAccountRepositoryPort } from '../ports/is-active-account.repository';
+import { AddAccountModel } from '../../domain/models/create-account.model';
 
 @Injectable()
 export class CreateAccountUseCase implements CreateAccountPort {

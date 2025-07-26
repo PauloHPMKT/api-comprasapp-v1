@@ -1,9 +1,4 @@
-export namespace AddAccountModel {
-  export type Params = {
-    userId: string;
-    password: string;
-  };
-}
+import { AddAccountModel } from '../models/create-account.model';
 
 export interface CreateAccountPort {
   execute(params: AddAccountModel.Params): Promise<void>;
