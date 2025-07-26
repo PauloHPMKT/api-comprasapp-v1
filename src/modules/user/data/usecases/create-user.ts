@@ -1,12 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import {
-  CreateUserModel,
-  CreateUserPort,
-} from '../../domain/ports/create-user-port';
 import { IsExistsUserRepositoryPort } from '../ports/is-exists-user.repository';
-import { UserAlreadyExistsError } from '@/shared/errors';
-import { User } from '../../domain/entities/User';
 import { CreateUserRepositoryPort } from '../ports/create-user.repository';
+import { CreateUserPort } from '../../domain/ports/create-user-port';
+import { CreateUserModel } from '../../domain/models/create-user.model';
+import { User } from '../../domain/entities/User';
+import { UserAlreadyExistsError } from '@/shared/errors';
 
 @Injectable()
 export class CreateUserUseCase implements CreateUserPort {
