@@ -30,7 +30,7 @@ export class CreateUserUseCase implements CreateUserPort {
       email: params.email,
     }).toJSON();
 
-    await this.createUserRepositoryPort.create({
+    const { email, id } = await this.createUserRepositoryPort.create({
       id: user.id,
       name: user.name,
       email: user.email,
@@ -38,9 +38,6 @@ export class CreateUserUseCase implements CreateUserPort {
       createdAt: user.createdAt,
     });
 
-    return {
-      email: 'valid_email@mail.com',
-      id: 'valid_id',
-    };
+    return { email, id };
   }
 }
