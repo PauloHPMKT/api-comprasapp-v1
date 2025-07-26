@@ -5,12 +5,16 @@ import {
 } from '../../domain/ports/create-user-port';
 import { IsExistsUserRepositoryPort } from '../ports/is-exists-user.repository';
 import { UserAlreadyExistsError } from '@/shared/errors';
+import { User } from '../../domain/entities/User';
+import { CreateUserRepositoryPort } from '../ports/create-user.repository';
 
 @Injectable()
 export class CreateUserUseCase implements CreateUserPort {
   constructor(
     @Inject('IsExistsUserRepositoryPort')
     private readonly isExistsUserRepositoryPort: IsExistsUserRepositoryPort,
+    @Inject('CreateUserRepositoryPort')
+    private readonly createUserRepositoryPort: CreateUserRepositoryPort,
   ) {}
 
   async execute(
@@ -20,11 +24,20 @@ export class CreateUserUseCase implements CreateUserPort {
     if (isUser) {
       throw new UserAlreadyExistsError();
     }
-    // chama o caso de uso do usuario para criar o usuário
-    // const isUserExists = await this.isExistsUserRepositoryPort.exists(
-    //   params.email,
-    // );
-    // if (isUserExists) throw new UserAlreadyExistsError();
+
+    const user = new User({
+      name: params.name,
+      email: params.email,
+    }).toJSON();
+
+    await this.createUserRepositoryPort.create({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      avatar: user.avatar,
+      createdAt: user.createdAt,
+    });
+
     return {
       email: 'valid_email@mail.com',
       id: 'valid_id',
