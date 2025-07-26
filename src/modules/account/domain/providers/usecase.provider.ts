@@ -1,6 +1,5 @@
 import { Provider } from '@nestjs/common';
-
-export class CreateAccountUseCase {}
+import { CreateAccountUseCase } from '../../data/usecases/create-account';
 
 export const makeUseCaseProviders = (): Provider[] => [
   {
