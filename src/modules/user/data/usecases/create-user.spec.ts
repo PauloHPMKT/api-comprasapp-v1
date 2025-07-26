@@ -106,4 +106,17 @@ describe('CreateUserUseCase', () => {
       createdAt: expect.any(Date),
     });
   });
+
+  it('should return a user with id and email', async () => {
+    const { sut } = await makeSut();
+    const params = {
+      name: 'Test User',
+      email: 'any_email@mail.com',
+    };
+    const result = await sut.execute(params);
+    expect(result).toEqual({
+      id: 'valid_id',
+      email: 'valid_email@mail.com',
+    });
+  });
 });
