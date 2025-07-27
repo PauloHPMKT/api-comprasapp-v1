@@ -3,12 +3,15 @@ import { CreateAccountPort } from '../../domain/ports/create-account.port';
 import { IsActiveAccountRepositoryPort } from '../ports/is-active-account.repository';
 import { AddAccountModel } from '../../domain/models/create-account.model';
 import { Account } from '../../domain/entities/Account';
+import { CreateAccountRepositoryPort } from '../ports/create-account.repository';
 
 @Injectable()
 export class CreateAccountUseCase implements CreateAccountPort {
   constructor(
-    @Inject('IsAccountActivePort')
+    @Inject('IsActiveAccountRepositoryPort')
     private readonly isAccountActivePort: IsActiveAccountRepositoryPort,
+    @Inject('CreateAccountRepositoryPort')
+    private readonly createAccountRepositoryPort: CreateAccountRepositoryPort,
   ) {}
 
   async execute(params: AddAccountModel.Params): Promise<void> {
@@ -18,9 +21,18 @@ export class CreateAccountUseCase implements CreateAccountPort {
 
     if (!isActive) throw new Error('Account is not active');
 
-    new Account({
+    const account = new Account({
       userId: params.userId,
       password: params.password,
     }).toJSON();
+
+    await this.createAccountRepositoryPort.add({
+      id: account.id,
+      plan: account.plan,
+      isActive: account.isActive,
+      userId: account.userId,
+      password: account.password,
+      createdAt: account.createdAt,
+    });
   }
 }
