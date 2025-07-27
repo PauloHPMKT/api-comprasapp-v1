@@ -18,29 +18,49 @@ jest.mock('../../domain/entities/account', () => ({
 }));
 
 const makeMocks = () => ({
-  isAccountActiveStub: {
+  isActiveAccountRepositoryPortStub: {
     checkAccountByStatus: jest.fn().mockReturnValue(true),
+  },
+  createAccountRepositoryPortStub: {
+    add: jest.fn().mockResolvedValue({
+      id: 'valid_id',
+      plan: 'free',
+      isActive: true,
+      userId: '507f1f77bcf86cd799439012',
+      password: 'hashed_password',
+      createdAt: new Date('2025-01-01T00:00:00Z'),
+    }),
   },
 });
 
 const makeSut = async (): Promise<SutTypes> => {
-  const { isAccountActiveStub } = makeMocks();
+  const { isActiveAccountRepositoryPortStub, createAccountRepositoryPortStub } =
+    makeMocks();
   const moduleRef: TestingModule = await Test.createTestingModule({
     providers: [
       CreateAccountUseCase,
       {
-        provide: 'IsAccountActivePort',
-        useValue: isAccountActiveStub,
+        provide: 'IsActiveAccountRepositoryPort',
+        useValue: isActiveAccountRepositoryPortStub,
+      },
+      {
+        provide: 'CreateAccountRepositoryPort',
+        useValue: createAccountRepositoryPortStub,
       },
     ],
   }).compile();
   const sut = moduleRef.get<CreateAccountUseCase>(CreateAccountUseCase);
-  return { sut, isAccountActiveStub };
+  return {
+    sut,
+    isActiveAccountRepositoryPortStub,
+    createAccountRepositoryPortStub,
+  };
 };
 
 type SutTypes = {
   sut: CreateAccountUseCase;
-  isAccountActiveStub: { checkAccountByStatus: jest.Mock };
+  isActiveAccountRepositoryPortStub: { checkAccountByStatus: jest.Mock };
+  createAccountRepositoryPortStub: { add: jest.Mock };
 };
 
 describe('CreateAccountUseCase', () => {
@@ -52,9 +72,9 @@ describe('CreateAccountUseCase', () => {
   });
 
   it('should thorw an exception if account is not active', async () => {
-    const { sut, isAccountActiveStub } = await makeSut();
+    const { sut, isActiveAccountRepositoryPortStub } = await makeSut();
     jest
-      .spyOn(isAccountActiveStub, 'checkAccountByStatus')
+      .spyOn(isActiveAccountRepositoryPortStub, 'checkAccountByStatus')
       .mockReturnValueOnce(false);
     const params = {
       userId: 'valid_user_id',
@@ -73,6 +93,24 @@ describe('CreateAccountUseCase', () => {
     expect(Account).toHaveBeenCalledWith({
       userId: '507f1f77bcf86cd799439012',
       password: 'secure_password',
+    });
+  });
+
+  it('should call createAccountRepository with correct parameters', async () => {
+    const { sut, createAccountRepositoryPortStub } = await makeSut();
+    const params = {
+      userId: '507f1f77bcf86cd799439012',
+      password: 'secure_password',
+    };
+    const createAccountSpy = jest.spyOn(createAccountRepositoryPortStub, 'add');
+    await sut.execute(params);
+    expect(createAccountSpy).toHaveBeenCalledWith({
+      id: 'valid_id',
+      plan: 'free',
+      isActive: true,
+      userId: '507f1f77bcf86cd799439012',
+      password: 'hashed_password',
+      createdAt: new Date('2025-01-01T00:00:00Z'),
     });
   });
 });
