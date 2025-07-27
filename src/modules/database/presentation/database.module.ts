@@ -1,8 +1,11 @@
-import { Global, Module } from '@nestjs/common';
+import { Global, Module, Provider } from '@nestjs/common';
+import { makeDatabaseProviders } from '../provider/database.provider';
+
+const providers: Provider[] = [...makeDatabaseProviders];
 
 @Global()
 @Module({
-  providers: [],
-  exports: [],
+  providers,
+  exports: providers,
 })
 export class DatabaseModule {}

@@ -11,3 +11,26 @@ services:
       - .:/usr/node/comprasapp
     extra_hosts:
       - host.docker.internal:host-gateway
+    networks:
+      - comprasapp-network
+
+  db:
+    image: mongo:4
+    container_name: mongo-db
+    ports:
+      - 27017:27018
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      #      MONGO_INITDB_ROOT_USERNAME: root
+      #      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: comprasapp
+    networks:
+      - comprasapp-network
+
+networks:
+  comprasapp-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
