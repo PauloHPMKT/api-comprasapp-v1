@@ -15,7 +15,7 @@ const config: Config = {
   coverageProvider: 'babel',
   testEnvironment: 'node',
   clearMocks: true,
-  //preset: '@shelf/jest-mongodb',
+  preset: '@shelf/jest-mongodb',
   transform: {
     '^.+\\.(t|j)s$': '@swc/jest',
   },
