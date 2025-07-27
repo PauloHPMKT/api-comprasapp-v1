@@ -1,7 +1,9 @@
+import { Injectable } from '@nestjs/common';
 import { CreateUserRepositoryModel } from '../../data/models/user-repository.model';
 import { CreateUserRepositoryPort } from '../../data/ports/create-user.repository';
 import { IsExistsUserRepositoryPort } from '../../data/ports/is-exists-user.repository';
 
+@Injectable()
 export class MongoUserRepository
   implements IsExistsUserRepositoryPort, CreateUserRepositoryPort
 {
