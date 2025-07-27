@@ -3,6 +3,7 @@ import { Account } from './Account';
 
 const makeSut = (): Account => {
   const props = {
+    userId: '507f1f77bcf86cd799439012',
     password: 'valid_password',
   };
   const id = new UniqueEntityId('507f1f77bcf86cd799439011');
@@ -27,9 +28,11 @@ describe('Account Entity', () => {
     expect(sut.props.isActive).not.toBe(false);
   });
 
-  it('should create a new Account with userId null', () => {
+  it('should create a new Account with a valid userId', () => {
     const sut = makeSut();
-    expect(sut.props.userId).toBeNull();
+    expect(sut.props.userId).toBeDefined();
+    expect(sut.props.userId).not.toBeNull();
+    expect(sut.props.userId).toMatch(/^[0-9a-f]{24}$/i);
   });
 
   it('should create a new Account with a valid Date', () => {
