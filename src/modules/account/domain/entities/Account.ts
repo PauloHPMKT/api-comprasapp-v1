@@ -1,22 +1,21 @@
+import Entity from '@/shared/@seedworks/domain/entity/entity';
 import UniqueEntityId from '@/shared/@seedworks/domain/value-objects/unique-entity-id';
 
 type AccountProps = {
   plan?: Account.Plan;
   isActive?: boolean;
-  userId?: string | null;
+  userId: string;
   password: string;
   createdAt?: Date;
 };
-export class Account {
-  public readonly id: UniqueEntityId;
+export class Account extends Entity<AccountProps> {
   constructor(
-    public readonly props: AccountProps,
+    public override readonly props: AccountProps,
     id?: UniqueEntityId,
   ) {
-    this.id = id || new UniqueEntityId();
+    super(props, id);
     this.props.plan = props.plan || Account.Plan.FREE;
     this.props.isActive = props.isActive ?? true;
-    this.props.userId = props.userId ?? null;
     this.props.createdAt = props.createdAt ?? new Date();
   }
 }
@@ -30,6 +29,7 @@ export namespace Account {
 
 console.log(
   new Account({
+    userId: '507f1f77bcf86cd799439012',
     password: 'secure_password',
-  }),
+  }).toJSON(),
 );
