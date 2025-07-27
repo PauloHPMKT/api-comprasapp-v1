@@ -8,7 +8,7 @@ const config: Config = {
     '!<rootDir>/src/main/**',
     '!<rootDir>/src/main.ts',
     '!<rootDir>/src/**/*.module.ts',
-    '!<rootDir>/src/modules/**/domain/providers/**',
+    '!<rootDir>/src/modules/**/*/providers/**',
   ],
   moduleFileExtensions: ['js', 'json', 'ts'],
   coverageDirectory: 'coverage',
