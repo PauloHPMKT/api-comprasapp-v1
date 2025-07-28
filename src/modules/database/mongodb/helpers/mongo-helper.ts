@@ -2,19 +2,29 @@ import { Collection, MongoClient } from 'mongodb';
 import { MongoDBHelperTypes } from '../types/mongodb.types';
 
 export const MongoHelper: MongoDBHelperTypes = {
-  client: MongoClient as unknown as MongoClient,
+  client: null as MongoClient | null,
 
   async connect(uri: string): Promise<void> {
-    this.client = await MongoClient.connect(uri);
+    if (this.client) {
+      await this.disconnect();
+    }
+    this.client = new MongoClient(uri);
+    await this.client.connect();
   },
+
   async disconnect(): Promise<void> {
-    await this.client.close();
+    if (this.client) {
+      await this.client.close();
+      this.client = null;
+    }
   },
+
   getCollection(name: string): Collection {
     return this.client.db().collection(name);
   },
-  map(collection: any): any {
-    const { _id, ...collectionWithoutId } = collection;
-    return Object.assign({}, collectionWithoutId, { id: _id });
+
+  map(document: any): any {
+    const { _id, ...rest } = document;
+    return { ...rest, id: _id };
   },
 };
