@@ -1,6 +1,6 @@
-import { Config } from 'jest';
-
-const config: Config = {
+module.exports = {
+  preset: '@shelf/jest-mongodb',
+  testEnvironment: 'node',
   roots: ['<rootDir>/src', '<rootDir>/test'],
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
@@ -13,9 +13,7 @@ const config: Config = {
   moduleFileExtensions: ['js', 'json', 'ts'],
   coverageDirectory: 'coverage',
   coverageProvider: 'babel',
-  testEnvironment: 'node',
   clearMocks: true,
-  preset: '@shelf/jest-mongodb',
   transform: {
     '^.+\\.(t|j)s$': '@swc/jest',
   },
@@ -24,5 +22,3 @@ const config: Config = {
     '@/(.*)': '<rootDir>/src/$1',
   },
 };
-
-export default config;
