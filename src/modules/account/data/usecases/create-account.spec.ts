@@ -113,4 +113,14 @@ describe('CreateAccountUseCase', () => {
       createdAt: new Date('2025-01-01T00:00:00Z'),
     });
   });
+
+  it('should return the created account id', async () => {
+    const { sut } = await makeSut();
+    const params = {
+      userId: '507f1f77bcf86cd799439012',
+      password: 'secure_password',
+    };
+    const result = await sut.execute(params);
+    expect(result).toEqual({ id: 'valid_id' });
+  });
 });

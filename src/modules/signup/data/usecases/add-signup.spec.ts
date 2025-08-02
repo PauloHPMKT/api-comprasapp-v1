@@ -9,7 +9,7 @@ const makeMocks = () => ({
     }),
   },
   createAccountStub: {
-    execute: jest.fn().mockResolvedValue(undefined),
+    execute: jest.fn().mockResolvedValue({ id: 'valid_id' }),
   },
   encrypterStub: {
     hash: jest.fn().mockResolvedValue('hashed_password'),
@@ -140,6 +140,37 @@ describe('AddSignupUseCase', () => {
       password: 'hashed_password',
       userId: 'valid_id',
     });
+  });
+
+  it('should receive an account id from CreateAccountPort', async () => {
+    const { sut, createAccountStub } = await makeSut();
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      confirmationPassword: 'anypassword',
+    };
+    jest
+      .spyOn(createAccountStub, 'execute')
+      .mockResolvedValueOnce({ id: 'any_account_id' });
+    await sut.execute(params);
+
+    const result = await createAccountStub.execute(params);
+    expect(result).toHaveProperty('id', 'valid_id');
+  });
+
+  it('should return an object with email and id from CreateUserPort', async () => {
+    const { sut, createUserStub } = await makeSut();
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      confirmationPassword: 'anypassword',
+    };
+    await sut.execute(params);
+    const result = await createUserStub.execute(params);
+    expect(result).toHaveProperty('id', 'valid_id');
+    expect(result).toHaveProperty('email', 'valid_email@mail.com');
   });
 
   it('should return the email on success', async () => {
