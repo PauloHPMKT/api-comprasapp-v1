@@ -18,7 +18,14 @@ export class MongoAccountRepository
   }
 
   async add(params: CreateAccountRepositoryModel.Params): Promise<void> {
-    console.log(`Adding account with params: ${JSON.stringify(params)}`);
-    // Logic to add the account would go here
+    const userCollection = MongoHelper.getCollection('accounts');
+    await userCollection.insertOne({
+      _id: MongoHelper.toObjectId(params.id),
+      plan: params.plan,
+      isActive: params.isActive,
+      userId: params.userId,
+      password: params.password,
+      createdAt: params.createdAt,
+    });
   }
 }
