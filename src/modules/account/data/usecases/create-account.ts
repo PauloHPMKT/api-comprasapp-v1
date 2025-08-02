@@ -19,7 +19,9 @@ export class CreateAccountUseCase implements CreateAccountPort {
       params.userId,
     );
 
-    if (!isActive) throw new Error('Account is not active');
+    if (isActive !== null && !isActive) {
+      throw new Error('Account is not active');
+    }
 
     const account = new Account({
       userId: params.userId,

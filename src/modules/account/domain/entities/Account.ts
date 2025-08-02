@@ -26,10 +26,3 @@ export namespace Account {
     PREMIUM = 'premium',
   }
 }
-
-console.log(
-  new Account({
-    userId: '507f1f77bcf86cd799439012',
-    password: 'secure_password',
-  }).toJSON(),
-);
