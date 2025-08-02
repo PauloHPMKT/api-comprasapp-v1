@@ -74,4 +74,16 @@ describe('MongoAccountRepository', () => {
       { projection: { _id: 1, isActive: 1 } },
     );
   });
+
+  it('should return false if account is not active', async () => {
+    const { sut, findOneMock } = await makeSut();
+    findOneMock.mockResolvedValue({ _id: 'someId', isActive: false });
+
+    const result = await sut.checkAccountByStatus('inactiveUserId');
+    expect(result).toBe(false);
+    expect(findOneMock).toHaveBeenCalledWith(
+      { userId: 'inactiveUserId' },
+      { projection: { _id: 1, isActive: 1 } },
+    );
+  });
 });
