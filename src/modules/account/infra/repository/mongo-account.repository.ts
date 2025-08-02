@@ -2,7 +2,9 @@ import { MongoHelper } from '@/modules/database/mongodb/helpers/mongo-helper';
 import { CreateAccountRepositoryModel } from '../../data/models/create-account-repository.model';
 import { CreateAccountRepositoryPort } from '../../data/ports/create-account.repository';
 import { IsActiveAccountRepositoryPort } from '../../data/ports/is-active-account.repository';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class MongoAccountRepository
   implements IsActiveAccountRepositoryPort, CreateAccountRepositoryPort
 {
