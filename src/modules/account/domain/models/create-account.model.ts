@@ -3,4 +3,8 @@ export namespace AddAccountModel {
     userId: string;
     password: string;
   };
+
+  export type Result = {
+    id: string;
+  };
 }

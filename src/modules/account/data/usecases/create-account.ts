@@ -14,7 +14,9 @@ export class CreateAccountUseCase implements CreateAccountPort {
     private readonly createAccountRepositoryPort: CreateAccountRepositoryPort,
   ) {}
 
-  async execute(params: AddAccountModel.Params): Promise<void> {
+  async execute(
+    params: AddAccountModel.Params,
+  ): Promise<AddAccountModel.Result> {
     const isActive = await this.isAccountActivePort.checkAccountByStatus(
       params.userId,
     );
@@ -28,7 +30,7 @@ export class CreateAccountUseCase implements CreateAccountPort {
       password: params.password,
     }).toJSON();
 
-    await this.createAccountRepositoryPort.add({
+    const { id } = await this.createAccountRepositoryPort.add({
       id: account.id,
       plan: account.plan,
       isActive: account.isActive,
@@ -36,5 +38,7 @@ export class CreateAccountUseCase implements CreateAccountPort {
       password: account.password,
       createdAt: account.createdAt,
     });
+
+    return { id };
   }
 }

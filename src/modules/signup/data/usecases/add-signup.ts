@@ -21,18 +21,20 @@ export class AddSignupUseCase implements AddAccount {
       throw new Error('Password and confirmation password do not match');
     }
 
-    const { email, id } = await this.createUserPort.execute({
+    const user = await this.createUserPort.execute({
       name: params.name,
       email: params.email,
     });
 
     const hashedPassword = await this.encrypterPort.hash(params.password);
 
-    await this.createAccountPort.execute({
-      userId: id,
+    const { id } = await this.createAccountPort.execute({
+      userId: user.id,
       password: hashedPassword,
     });
 
-    return email;
+    console.log(`Account created with ID: ${id}`);
+
+    return user.email;
   }
 }
