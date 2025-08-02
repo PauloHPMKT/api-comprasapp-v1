@@ -67,11 +67,8 @@ describe('MongoUserRepository', () => {
 
   it('Should return an user on success', async () => {
     const { sut, insertOneMock, findOneMock } = await makeSut();
-
     const insertedId = new ObjectId();
-
     insertOneMock.mockResolvedValueOnce({ insertedId });
-
     findOneMock.mockResolvedValueOnce({
       _id: insertedId,
       email: 'any_email@mail.com',

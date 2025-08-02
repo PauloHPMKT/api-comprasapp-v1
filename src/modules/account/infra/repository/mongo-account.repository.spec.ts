@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MongoHelper } from '@/modules/database/mongodb/helpers/mongo-helper';
 import { MongoAccountRepository } from './mongo-account.repository';
+import { ObjectId } from 'mongodb';
 
 const makeSut = async (): Promise<SutTypes> => {
   const findOneMock = jest.fn();
@@ -85,5 +86,29 @@ describe('MongoAccountRepository', () => {
       { userId: 'inactiveUserId' },
       { projection: { _id: 1, isActive: 1 } },
     );
+  });
+
+  it('should add a new account', async () => {
+    const { sut, insertOneMock } = await makeSut();
+    const insertedId = new ObjectId('507f1f77bcf86cd799439012');
+    const params = {
+      id: insertedId.toString(),
+      plan: 'free' as any,
+      isActive: true,
+      userId: 'userId123',
+      password: 'hashedPassword',
+      createdAt: new Date(),
+    };
+    insertOneMock.mockResolvedValue({ insertedId: insertedId });
+    await sut.add(params);
+    expect(insertOneMock).toHaveBeenCalledWith({
+      _id: MongoHelper.toObjectId(params.id),
+      plan: params.plan,
+      isActive: params.isActive,
+      userId: params.userId,
+      password: params.password,
+      createdAt: params.createdAt,
+    });
+    expect(insertOneMock).toHaveBeenCalledTimes(1);
   });
 });
