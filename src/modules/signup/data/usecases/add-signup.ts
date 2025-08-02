@@ -4,6 +4,7 @@ import { AddAccount } from '../../domain/usecases/add-account';
 import { EncrypterPort } from '@/modules/encrypter/domain/ports/encrypter.port';
 import { CreateUserPort } from '@/modules/user/domain/ports/create-user-port';
 import { CreateAccountPort } from '@/modules/account/domain/ports/create-account.port';
+import { CreateDefaultCategoriesPort } from '@/modules/categories/domain/ports/create-default-categories.port';
 
 @Injectable()
 export class AddSignupUseCase implements AddAccount {
@@ -14,6 +15,8 @@ export class AddSignupUseCase implements AddAccount {
     private readonly encrypterPort: EncrypterPort,
     @Inject('CreateAccountPort')
     private readonly createAccountPort: CreateAccountPort,
+    @Inject('CreateDefaultCategoriesPort')
+    private readonly createDefaultCategoriesPort: CreateDefaultCategoriesPort,
   ) {}
 
   async execute(params: SignupModel.Params): Promise<string> {
@@ -33,7 +36,7 @@ export class AddSignupUseCase implements AddAccount {
       password: hashedPassword,
     });
 
-    console.log(`Account created with ID: ${id}`);
+    await this.createDefaultCategoriesPort.execute(id);
 
     return user.email;
   }
