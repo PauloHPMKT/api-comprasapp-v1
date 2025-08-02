@@ -1,5 +1,5 @@
 import { Global, Module, Provider } from '@nestjs/common';
-import { makeDatabaseProviders } from '../provider/database.provider';
+import { makeDatabaseProviders } from '../providers/database.provider';
 
 const providers: Provider[] = [...makeDatabaseProviders];
 
