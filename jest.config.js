@@ -8,7 +8,7 @@ module.exports = {
     '!<rootDir>/src/main/**',
     '!<rootDir>/src/main.ts',
     '!<rootDir>/src/**/*.module.ts',
-    '!<rootDir>/src/modules/**/*/providers/**',
+    '!<rootDir>/src/modules/**/providers/**',
   ],
   moduleFileExtensions: ['js', 'json', 'ts'],
   coverageDirectory: 'coverage',
