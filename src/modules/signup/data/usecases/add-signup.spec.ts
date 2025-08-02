@@ -11,13 +11,21 @@ const makeMocks = () => ({
   createAccountStub: {
     execute: jest.fn().mockResolvedValue({ id: 'valid_id' }),
   },
+  createDefaultCategoriesStub: {
+    execute: jest.fn().mockResolvedValue(undefined),
+  },
   encrypterStub: {
     hash: jest.fn().mockResolvedValue('hashed_password'),
   },
 });
 
 const makeSut = async (): Promise<SutTypes> => {
-  const { createUserStub, encrypterStub, createAccountStub } = makeMocks();
+  const {
+    createUserStub,
+    encrypterStub,
+    createAccountStub,
+    createDefaultCategoriesStub,
+  } = makeMocks();
 
   const moduleRef: TestingModule = await Test.createTestingModule({
     providers: [
@@ -34,10 +42,20 @@ const makeSut = async (): Promise<SutTypes> => {
         provide: 'CreateAccountPort',
         useValue: createAccountStub,
       },
+      {
+        provide: 'CreateDefaultCategoriesPort',
+        useValue: createDefaultCategoriesStub,
+      },
     ],
   }).compile();
   const sut = moduleRef.get<AddSignupUseCase>(AddSignupUseCase);
-  return { sut, createUserStub, encrypterStub, createAccountStub };
+  return {
+    sut,
+    createUserStub,
+    encrypterStub,
+    createAccountStub,
+    createDefaultCategoriesStub,
+  };
 };
 
 type SutTypes = {
@@ -45,6 +63,7 @@ type SutTypes = {
   createUserStub: { execute: jest.Mock };
   encrypterStub: { hash: jest.Mock };
   createAccountStub: { execute: jest.Mock };
+  createDefaultCategoriesStub: { execute: jest.Mock };
 };
 
 describe('AddSignupUseCase', () => {
@@ -171,6 +190,22 @@ describe('AddSignupUseCase', () => {
     const result = await createUserStub.execute(params);
     expect(result).toHaveProperty('id', 'valid_id');
     expect(result).toHaveProperty('email', 'valid_email@mail.com');
+  });
+
+  it('should call CreateDefaultCategoriesPort with correct accountId', async () => {
+    const { sut, createDefaultCategoriesStub } = await makeSut();
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      confirmationPassword: 'anypassword',
+    };
+    const createDefaultCategoriesSpy = jest.spyOn(
+      createDefaultCategoriesStub,
+      'execute',
+    );
+    await sut.execute(params);
+    expect(createDefaultCategoriesSpy).toHaveBeenCalledWith('valid_id');
   });
 
   it('should return the email on success', async () => {
