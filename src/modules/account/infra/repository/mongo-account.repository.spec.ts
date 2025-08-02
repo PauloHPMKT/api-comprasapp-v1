@@ -50,4 +50,16 @@ describe('MongoAccountRepository', () => {
     expect(sut).toBeInstanceOf(MongoAccountRepository);
     expect(sut).toBeTruthy();
   });
+
+  it('should return null if no account is found', async () => {
+    const { sut, findOneMock } = await makeSut();
+    findOneMock.mockResolvedValue(null);
+
+    const result = await sut.checkAccountByStatus('nonexistentUserId');
+    expect(result).toBeNull();
+    expect(findOneMock).toHaveBeenCalledWith(
+      { userId: 'nonexistentUserId' },
+      { projection: { _id: 1, isActive: 1 } },
+    );
+  });
 });
