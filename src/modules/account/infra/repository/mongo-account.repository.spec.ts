@@ -109,6 +109,11 @@ describe('MongoAccountRepository', () => {
       password: params.password,
       createdAt: params.createdAt,
     });
+    expect(insertedId.toHexString()).toBe('507f1f77bcf86cd799439012');
+    expect(insertedId.toHexString()).toEqual(params.id);
+    expect(insertedId.toHexString()).toBeDefined();
+    expect(insertedId.toHexString()).toBeTruthy();
+    expect(insertedId.toHexString()).not.toBeNull();
     expect(insertOneMock).toHaveBeenCalledTimes(1);
   });
 });
