@@ -1,4 +1,4 @@
-import { Collection, MongoClient } from 'mongodb';
+import { Collection, MongoClient, ObjectId } from 'mongodb';
 import { MongoDBHelperTypes } from '../types/mongodb.types';
 
 export const MongoHelper: MongoDBHelperTypes = {
@@ -26,5 +26,9 @@ export const MongoHelper: MongoDBHelperTypes = {
   map(document: any): any {
     const { _id, ...rest } = document;
     return { ...rest, id: _id };
+  },
+
+  toObjectId(id: string): ObjectId {
+    return new ObjectId(id);
   },
 };

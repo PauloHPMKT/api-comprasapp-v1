@@ -18,10 +18,22 @@ export class MongoUserRepository
   }
 
   async create(
-    userData: CreateUserRepositoryModel.Params,
+    data: CreateUserRepositoryModel.Params,
   ): Promise<CreateUserRepositoryModel.Result> {
-    // Simulate user creation
-    console.log(`Creating user with data: ${JSON.stringify(userData)}`);
-    return { id: userData.id, email: userData.email };
+    const userCollection = MongoHelper.getCollection('users');
+    const { insertedId } = await userCollection.insertOne({
+      _id: MongoHelper.toObjectId(data.id),
+      name: data.name,
+      email: data.email,
+      avatar: data.avatar ?? null,
+      createdAt: data.createdAt,
+    });
+    const user = await userCollection.findOne(
+      { _id: insertedId },
+      { projection: { _id: 1, email: 1 } },
+    );
+    const { id, email } = MongoHelper.map(user);
+
+    return { id, email };
   }
 }
