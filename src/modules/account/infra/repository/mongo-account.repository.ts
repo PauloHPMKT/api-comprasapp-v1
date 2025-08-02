@@ -17,9 +17,11 @@ export class MongoAccountRepository
     return user ? user.isActive : null;
   }
 
-  async add(params: CreateAccountRepositoryModel.Params): Promise<void> {
+  async add(
+    params: CreateAccountRepositoryModel.Params,
+  ): Promise<CreateAccountRepositoryModel.Result> {
     const userCollection = MongoHelper.getCollection('accounts');
-    await userCollection.insertOne({
+    const { insertedId } = await userCollection.insertOne({
       _id: MongoHelper.toObjectId(params.id),
       plan: params.plan,
       isActive: params.isActive,
@@ -27,5 +29,9 @@ export class MongoAccountRepository
       password: params.password,
       createdAt: params.createdAt,
     });
+
+    return {
+      id: insertedId.toHexString(),
+    };
   }
 }
