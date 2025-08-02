@@ -1,8 +1,15 @@
+import bcrypt from 'bcrypt';
 import { EncrypterPort } from '../domain/ports/encrypter.port';
 
 export class BcryptAdapter implements EncrypterPort {
+  private readonly salt: number;
+
+  constructor(salt: number) {
+    this.salt = salt;
+  }
+
   async hash(value: string): Promise<string> {
-    // Simulate hashing for the sake of this example
-    return `hashed_${value}`;
+    const hashedPassword = await bcrypt.hash(value, this.salt);
+    return hashedPassword;
   }
 }
