@@ -1,14 +1,11 @@
 import { Provider } from '@nestjs/common';
+import { BcryptAdapter } from '../../adapters/bcrypt.adapter';
 
-class BcryptAdapter {
-  async hash(value: string): Promise<string> {
-    return `hashed_${value}`;
-  }
-}
+const salt = 12;
 
 export const makeEncrypterProvider = (): Provider[] => [
   {
     provide: 'EncrypterPort',
-    useClass: BcryptAdapter,
+    useValue: new BcryptAdapter(salt),
   },
 ];
