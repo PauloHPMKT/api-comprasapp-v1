@@ -24,4 +24,13 @@ describe('CreateDefaultCategoriesUseCase', () => {
     expect(sut).toBeInstanceOf(CreateDefaultCategoriesUseCase);
     expect(sut).toBeTruthy();
   });
+
+  it.each([undefined, null, ''])(
+    'should throw an error if accountId has any invalid value: %s',
+    async (invalidAccountId) => {
+      const { sut } = await makeSut();
+      const promise = sut.execute(invalidAccountId as any);
+      await expect(promise).rejects.toThrow('Account ID is required');
+    },
+  );
 });
