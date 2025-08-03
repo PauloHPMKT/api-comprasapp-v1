@@ -1,6 +1,5 @@
 import { Provider } from '@nestjs/common';
-
-class CreateDefaultCategoriesUseCase {}
+import { CreateDefaultCategoriesUseCase } from '../../data/usecases/create-default-categories';
 
 export const makeUseCaseCategoriesProviders = (): Provider[] => [
   {
