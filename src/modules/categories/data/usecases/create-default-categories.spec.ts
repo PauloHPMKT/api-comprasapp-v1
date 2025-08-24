@@ -14,7 +14,7 @@ const makeSut = async (): Promise<SutTypes> => {
     providers: [
       CreateDefaultCategoriesUseCase,
       {
-        provide: 'CreateDefaultCategoriesRepositoryPort',
+        provide: 'CREATE_DEFAULT_CATEGORIES_REPOSITORY_PORT',
         useValue: createDefaultCategoriesRepositoryStub,
       },
     ],
@@ -48,7 +48,7 @@ describe('CreateDefaultCategoriesUseCase', () => {
     async (invalidAccountId) => {
       const { sut } = await makeSut();
       const promise = sut.execute(invalidAccountId as any);
-      await expect(promise).rejects.toThrow('Account ID is required');
+      await expect(promise).rejects.toThrow('Account ID é obrigatório');
     },
   );
 
@@ -70,8 +70,9 @@ describe('CreateDefaultCategoriesUseCase', () => {
       'create',
     );
     const expectedCategories = categories.map((category) => ({
-      ...category,
+      id: expect.any(String),
       accountId,
+      ...category,
       createdAt: expect.any(Date),
     }));
     sut.execute(accountId);

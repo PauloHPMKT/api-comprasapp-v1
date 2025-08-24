@@ -4,7 +4,7 @@ class MongoCategoriesRepository {}
 
 export const makeCategoriesRepositoryProviders = (): Provider[] => [
   {
-    provide: 'CreateDefaultCategoriesRepositoryPort',
+    provide: 'CREATE_DEFAULT_CATEGORIES_REPOSITORY_PORT',
     useClass: MongoCategoriesRepository,
   },
 ];
