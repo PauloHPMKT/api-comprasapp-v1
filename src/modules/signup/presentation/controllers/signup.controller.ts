@@ -31,11 +31,11 @@ export class SignupController extends BaseController<SignupModel.Params> {
         'password',
         'confirmationPassword',
       ];
-      for (const field of requiredFields) {
-        if (!request.body[field]) {
-          return badRequest(new MissingParamError(field));
-        }
-      }
+      const hasError = this.validateRequiredFields(
+        request.body,
+        requiredFields,
+      );
+      if (hasError) return badRequest(new MissingParamError(hasError));
 
       const { name, email, password, confirmationPassword } = request.body;
 
