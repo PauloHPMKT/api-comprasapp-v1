@@ -1,7 +1,10 @@
 import { Category } from './Category';
 
 const makeSut = (): Category => {
-  return new Category();
+  const categoryProps = {
+    accountId: 'any_account_id',
+  };
+  return new Category(categoryProps);
 };
 
 describe('Category Entity', () => {
@@ -10,5 +13,10 @@ describe('Category Entity', () => {
     expect(sut).toBeDefined();
     expect(sut).toBeInstanceOf(Category);
     expect(sut).toBeTruthy();
+  });
+
+  it('should create a category with account_id values', () => {
+    const sut = makeSut();
+    expect(sut.props.accountId).toBe('any_account_id');
   });
 });
