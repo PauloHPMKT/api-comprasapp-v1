@@ -33,4 +33,11 @@ describe('Category Entity', () => {
     expect(sut.props).toHaveProperty('accountId');
     expect(sut.props.emoji).toBe('any_emoji');
   });
+
+  it('should create a category with a valid createdAt Date', () => {
+    const sut = makeSut();
+    expect(sut.props).toHaveProperty('accountId');
+    expect(sut.props).toHaveProperty('createdAt');
+    expect(sut.props.createdAt).toBeInstanceOf(Date);
+  });
 });
