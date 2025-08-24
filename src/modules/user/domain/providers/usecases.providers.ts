@@ -3,7 +3,7 @@ import { CreateUserUseCase } from '../../data/usecases/create-user';
 
 export const makeUseCaseProviders = (): Provider[] => [
   {
-    provide: 'CreateUserPort',
+    provide: 'CREATE_USER_PORT',
     useClass: CreateUserUseCase,
   },
 ];

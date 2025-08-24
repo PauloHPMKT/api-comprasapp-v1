@@ -9,13 +9,13 @@ import { CreateDefaultCategoriesPort } from '@/modules/categories/domain/ports/c
 @Injectable()
 export class AddSignupUseCase implements AddSignup {
   constructor(
-    @Inject('CreateUserPort')
+    @Inject('CREATE_USER_PORT')
     private readonly createUserPort: CreateUserPort,
-    @Inject('EncrypterPort')
+    @Inject('ENCRYPTER_PORT')
     private readonly encrypterPort: EncrypterPort,
-    @Inject('CreateAccountPort')
+    @Inject('CREATE_ACCOUNT_PORT')
     private readonly createAccountPort: CreateAccountPort,
-    @Inject('CreateDefaultCategoriesPort')
+    @Inject('CREATE_DEFAULT_CATEGORIES_PORT')
     private readonly createDefaultCategoriesPort: CreateDefaultCategoriesPort,
   ) {}
 

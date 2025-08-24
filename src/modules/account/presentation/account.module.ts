@@ -10,6 +10,6 @@ const providers: Provider[] = [
 @Module({
   controllers: [],
   providers,
-  exports: ['CreateAccountPort'],
+  exports: ['CREATE_ACCOUNT_PORT'],
 })
 export class AccountModule {}

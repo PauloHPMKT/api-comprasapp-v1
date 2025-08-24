@@ -3,7 +3,7 @@ import { CreateDefaultCategoriesUseCase } from '../../data/usecases/create-defau
 
 export const makeUseCaseCategoriesProviders = (): Provider[] => [
   {
-    provide: 'CreateDefaultCategoriesPort',
+    provide: 'CREATE_DEFAULT_CATEGORIES_PORT',
     useClass: CreateDefaultCategoriesUseCase,
   },
 ];

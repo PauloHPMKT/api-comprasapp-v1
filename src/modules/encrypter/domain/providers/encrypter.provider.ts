@@ -5,7 +5,7 @@ const salt = 12;
 
 export const makeEncrypterProvider = (): Provider[] => [
   {
-    provide: 'EncrypterPort',
+    provide: 'ENCRYPTER_PORT',
     useValue: new BcryptAdapter(salt),
   },
 ];

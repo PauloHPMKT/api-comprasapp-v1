@@ -32,19 +32,19 @@ const makeSut = async (): Promise<SutTypes> => {
     providers: [
       AddSignupUseCase,
       {
-        provide: 'EncrypterPort',
+        provide: 'ENCRYPTER_PORT',
         useValue: encrypterStub,
       },
       {
-        provide: 'CreateUserPort',
+        provide: 'CREATE_USER_PORT',
         useValue: createUserStub,
       },
       {
-        provide: 'CreateAccountPort',
+        provide: 'CREATE_ACCOUNT_PORT',
         useValue: createAccountStub,
       },
       {
-        provide: 'CreateDefaultCategoriesPort',
+        provide: 'CREATE_DEFAULT_CATEGORIES_PORT',
         useValue: createDefaultCategoriesStub,
       },
     ],
