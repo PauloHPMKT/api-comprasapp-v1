@@ -74,7 +74,7 @@ describe('CreateUserUseCase', () => {
     jest
       .spyOn(isExistsUserRepositoryStub, 'exists')
       .mockResolvedValueOnce(true);
-    await expect(sut.execute(params)).rejects.toThrow('User already exists');
+    await expect(sut.execute(params)).rejects.toThrow('O usuário já existe.');
   });
 
   it('should call User Entity with correct parameters', async () => {

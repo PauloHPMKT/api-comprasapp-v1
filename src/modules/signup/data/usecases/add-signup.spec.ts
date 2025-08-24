@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AddSignupUseCase } from './add-signup';
+import { UserAlreadyExistsError } from '@/shared/errors';
 
 const makeMocks = () => ({
   createUserStub: {
@@ -107,7 +108,7 @@ describe('AddSignupUseCase', () => {
     const { sut, createUserStub } = await makeSut();
     jest
       .spyOn(createUserStub, 'execute')
-      .mockRejectedValue(new Error('User already exists'));
+      .mockRejectedValue(new UserAlreadyExistsError());
     const params = {
       name: 'anyname',
       email: 'anyemail@mail.com',
@@ -115,7 +116,7 @@ describe('AddSignupUseCase', () => {
       confirmationPassword: 'anypassword',
     };
     const promise = sut.execute(params);
-    await expect(promise).rejects.toThrow('User already exists');
+    await expect(promise).rejects.toThrow('O usuário já existe');
   });
 
   it('should return an object with email and id from CreateUserPort', async () => {
