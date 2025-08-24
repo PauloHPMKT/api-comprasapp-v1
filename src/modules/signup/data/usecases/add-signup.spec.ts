@@ -84,7 +84,7 @@ describe('AddSignupUseCase', () => {
       confirmationPassword: 'anypassword2',
     };
     await expect(sut.execute(params)).rejects.toThrow(
-      'Password and confirmation password do not match',
+      'As senhas fornecidas não coincidem.',
     );
   });
 

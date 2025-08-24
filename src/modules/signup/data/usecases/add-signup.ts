@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { SignupModel } from '../../domain/models/signup';
-import { AddAccount } from '../../domain/usecases/add-account';
+import { AddSignup } from '../../domain/usecases/add-account';
 import { EncrypterPort } from '@/modules/encrypter/domain/ports/encrypter.port';
 import { CreateUserPort } from '@/modules/user/domain/ports/create-user-port';
 import { CreateAccountPort } from '@/modules/account/domain/ports/create-account.port';
 import { CreateDefaultCategoriesPort } from '@/modules/categories/domain/ports/create-default-categories.port';
 
 @Injectable()
-export class AddSignupUseCase implements AddAccount {
+export class AddSignupUseCase implements AddSignup {
   constructor(
     @Inject('CreateUserPort')
     private readonly createUserPort: CreateUserPort,
@@ -21,7 +21,7 @@ export class AddSignupUseCase implements AddAccount {
 
   async execute(params: SignupModel.Params): Promise<string> {
     if (params.password !== params.confirmationPassword) {
-      throw new Error('Password and confirmation password do not match');
+      throw new Error('As senhas fornecidas não coincidem.');
     }
 
     const user = await this.createUserPort.execute({
