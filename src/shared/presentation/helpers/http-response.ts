@@ -2,19 +2,19 @@ import { HttpStatus } from '@nestjs/common';
 import { HttpResponse } from '../http';
 import { ServerError } from '../../errors';
 
-export const badRequest = (error: Error): HttpResponse<Error> => ({
+export const badRequest = (error: Error): HttpResponse<string> => ({
   statusCode: HttpStatus.BAD_REQUEST,
-  body: error,
+  body: error.message,
 });
 
-export const conflict = (error: Error): HttpResponse<Error> => ({
+export const conflict = (error: Error): HttpResponse<string> => ({
   statusCode: HttpStatus.CONFLICT,
-  body: error,
+  body: error.message,
 });
 
-export const serverError = (): HttpResponse<Error> => ({
+export const serverError = (): HttpResponse<string> => ({
   statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-  body: new ServerError(),
+  body: new ServerError().message,
 });
 
 export const created = <T = any>(data: T): HttpResponse<T> => ({

@@ -57,7 +57,7 @@ describe('AppController', () => {
     };
     const response = await sut.handle(request);
     expect(response.statusCode).toBe(400);
-    expect(response.body).toEqual(new MissingParamError('name'));
+    expect(response.body).toEqual(new MissingParamError('name').message);
   });
 
   it('should return 400 if no email is provided', async () => {
@@ -72,7 +72,7 @@ describe('AppController', () => {
     };
     const response = await sut.handle(request);
     expect(response.statusCode).toBe(400);
-    expect(response.body).toEqual(new MissingParamError('email'));
+    expect(response.body).toEqual(new MissingParamError('email').message);
   });
 
   it('should return 400 if no password is provided', async () => {
@@ -87,7 +87,7 @@ describe('AppController', () => {
     };
     const response = await sut.handle(request);
     expect(response.statusCode).toBe(400);
-    expect(response.body).toEqual(new MissingParamError('password'));
+    expect(response.body).toEqual(new MissingParamError('password').message);
   });
 
   it('should return 400 if no confirmationPassword is provided', async () => {
@@ -103,7 +103,7 @@ describe('AppController', () => {
     const response = await sut.handle(request);
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual(
-      new MissingParamError('confirmationPassword'),
+      new MissingParamError('confirmationPassword').message,
     );
   });
 
@@ -142,7 +142,7 @@ describe('AppController', () => {
     };
     const response = await sut.handle(request);
     expect(response.statusCode).toBe(500);
-    expect(response.body).toEqual(new ServerError());
+    expect(response.body).toEqual(new ServerError().message);
   });
 
   it('should return 409 if User already exists', async () => {
@@ -160,7 +160,7 @@ describe('AppController', () => {
     };
     const response = await sut.handle(request);
     expect(response.statusCode).toBe(409);
-    expect(response.body).toEqual(new UserAlreadyExistsError());
+    expect(response.body).toEqual(new UserAlreadyExistsError().message);
   });
 
   it('should return 201 if account is created successfully', async () => {
