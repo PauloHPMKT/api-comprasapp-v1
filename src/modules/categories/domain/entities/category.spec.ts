@@ -1,9 +1,10 @@
-import { Category } from './Category';
+import { Category, CategoryProps } from './Category';
 
 const makeSut = (): Category => {
-  const categoryProps = {
+  const categoryProps: CategoryProps = {
     accountId: 'any_account_id',
     name: 'any_category_name',
+    emoji: 'any_emoji',
   };
   return new Category(categoryProps);
 };
@@ -25,5 +26,11 @@ describe('Category Entity', () => {
     const sut = makeSut();
     expect(sut.props).toHaveProperty('accountId');
     expect(sut.props.name).toBe('any_category_name');
+  });
+
+  it('should create a category with a emoji', () => {
+    const sut = makeSut();
+    expect(sut.props).toHaveProperty('accountId');
+    expect(sut.props.emoji).toBe('any_emoji');
   });
 });
