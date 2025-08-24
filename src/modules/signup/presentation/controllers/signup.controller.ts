@@ -1,6 +1,6 @@
 import { Controller, Inject, Post, Req } from '@nestjs/common';
 import { SignupModel } from '../../domain/models/signup';
-import { AddAccount } from '../../domain/usecases/add-account';
+import { AddSignup } from '../../domain/usecases/add-account';
 import { BaseController } from '@/shared/presentation/protocols/Controller';
 import {
   badRequest,
@@ -14,8 +14,8 @@ import { MissingParamError, UserAlreadyExistsError } from '@/shared/errors';
 @Controller('signup')
 export class SignupController extends BaseController<SignupModel.Params> {
   constructor(
-    @Inject('AddAccount')
-    private readonly addAccount: AddAccount,
+    @Inject('ADD_SIGNUP')
+    private readonly addSignup: AddSignup,
   ) {
     super();
   }
@@ -39,7 +39,7 @@ export class SignupController extends BaseController<SignupModel.Params> {
 
       const { name, email, password, confirmationPassword } = request.body;
 
-      const useremail = await this.addAccount.execute({
+      const useremail = await this.addSignup.execute({
         name,
         email,
         password,

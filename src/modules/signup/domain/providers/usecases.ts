@@ -3,7 +3,7 @@ import { AddSignupUseCase } from '../../data/usecases/add-signup';
 
 export const makeUseCasesProviders = (): Provider[] => [
   {
-    provide: 'AddAccount',
+    provide: 'ADD_SIGNUP',
     useClass: AddSignupUseCase,
   },
 ];

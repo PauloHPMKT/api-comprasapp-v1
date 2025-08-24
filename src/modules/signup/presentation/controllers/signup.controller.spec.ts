@@ -1,40 +1,34 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SignupController } from './signup.controller';
-import { SignupModel } from '../../domain/models/signup';
-import { AddAccount } from '../../domain/usecases/add-account';
+import { AddSignup } from '../../domain/usecases/add-account';
 import { MissingParamError } from '@/shared/errors/missing-param-error';
 import { UserAlreadyExistsError } from '@/shared/errors/user-already-exists-error';
 import { ServerError } from '@/shared/errors/server-error';
 
-const makeAddAccountStub = (): AddAccount => {
-  class AddAccountStub implements AddAccount {
-    // TODO - Adicionar objeto de valor para garantir que a string é um email válido Promise<string | Error>
-    async execute(params: SignupModel.Params): Promise<string> {
-      console.log(params);
-      return 'valid_email@mail.com';
-    }
-  }
-  return new AddAccountStub();
-};
+const makeMocks = () => ({
+  addSignupStub: {
+    execute: jest.fn().mockReturnValue(Promise.resolve('valid_email@mail.com')),
+  },
+});
 
 const makeSut = async (): Promise<SutTypes> => {
-  const addAccountStub = makeAddAccountStub();
+  const { addSignupStub } = makeMocks();
   const moduleRef: TestingModule = await Test.createTestingModule({
     controllers: [SignupController],
     providers: [
       {
-        provide: 'AddAccount',
-        useValue: addAccountStub,
+        provide: 'ADD_SIGNUP',
+        useValue: addSignupStub,
       },
     ],
   }).compile();
   const sut = moduleRef.get<SignupController>(SignupController);
-  return { sut, addAccountStub };
+  return { sut, addSignupStub };
 };
 
 type SutTypes = {
   sut: SignupController;
-  addAccountStub: AddAccount;
+  addSignupStub: AddSignup;
 };
 
 describe('AppController', () => {
@@ -108,8 +102,8 @@ describe('AppController', () => {
   });
 
   it('should call AddAccount with correct values', async () => {
-    const { sut, addAccountStub } = await makeSut();
-    const addAccountSpy = jest.spyOn(addAccountStub, 'execute');
+    const { sut, addSignupStub } = await makeSut();
+    const addAccountSpy = jest.spyOn(addSignupStub, 'execute');
     const request = {
       body: {
         name: 'anyname',
@@ -128,8 +122,8 @@ describe('AppController', () => {
   });
 
   it('should return 500 if AddAccount throws', async () => {
-    const { sut, addAccountStub } = await makeSut();
-    jest.spyOn(addAccountStub, 'execute').mockImplementationOnce(() => {
+    const { sut, addSignupStub } = await makeSut();
+    jest.spyOn(addSignupStub, 'execute').mockImplementationOnce(() => {
       throw new Error('Internal server error');
     });
     const request = {
@@ -146,8 +140,8 @@ describe('AppController', () => {
   });
 
   it('should return 409 if User already exists', async () => {
-    const { sut, addAccountStub } = await makeSut();
-    jest.spyOn(addAccountStub, 'execute').mockImplementationOnce(() => {
+    const { sut, addSignupStub } = await makeSut();
+    jest.spyOn(addSignupStub, 'execute').mockImplementationOnce(() => {
       throw new UserAlreadyExistsError();
     });
     const request = {
