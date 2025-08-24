@@ -1,5 +1,6 @@
 export type CategoryProps = {
   accountId: string;
+  name: string;
 };
 
 export class Category {
