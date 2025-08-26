@@ -35,6 +35,8 @@ export class CreateDefaultCategoriesUseCase
       }).toJSON(),
     );
 
-    await this.createDefaultCategoriesRepositoryPort.create(categoriesMapped);
+    await this.createDefaultCategoriesRepositoryPort.addCategories(
+      categoriesMapped,
+    );
   }
 }

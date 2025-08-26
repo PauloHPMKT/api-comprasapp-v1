@@ -3,7 +3,7 @@ import { CreateDefaultCategoriesUseCase } from './create-default-categories';
 
 const makeMocks = () => ({
   createDefaultCategoriesRepositoryStub: {
-    create: jest.fn().mockResolvedValue(undefined),
+    addCategories: jest.fn().mockResolvedValue(undefined),
   },
 });
 
@@ -31,7 +31,7 @@ const makeSut = async (): Promise<SutTypes> => {
 type SutTypes = {
   sut: CreateDefaultCategoriesUseCase;
   createDefaultCategoriesRepositoryStub: {
-    create: jest.Mock;
+    addCategories: jest.Mock;
   };
 };
 
@@ -67,7 +67,7 @@ describe('CreateDefaultCategoriesUseCase', () => {
     ];
     const createDefaultCategoriesSpy = jest.spyOn(
       createDefaultCategoriesRepositoryStub,
-      'create',
+      'addCategories',
     );
     const expectedCategories = categories.map((category) => ({
       id: expect.any(String),
