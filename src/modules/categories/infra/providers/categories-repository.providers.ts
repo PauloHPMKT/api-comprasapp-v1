@@ -1,6 +1,5 @@
 import { Provider } from '@nestjs/common';
-
-class MongoCategoriesRepository {}
+import { MongoCategoriesRepository } from '../repository/mongo-category.repository';
 
 export const makeCategoriesRepositoryProviders = (): Provider[] => [
   {
