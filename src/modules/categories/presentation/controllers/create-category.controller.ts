@@ -7,6 +7,7 @@ import { CreateCategory } from '../../domain/ports/create-category';
 import {
   badRequest,
   created,
+  serverError,
 } from '@/shared/presentation/helpers/http-response';
 
 @Controller('category')
@@ -25,22 +26,29 @@ export class CreateCategoryController extends BaseController<
   async handle(
     @Req() request: HttpRequest<CreateCategoryModel.Params>,
   ): Promise<HttpResponse<CreateCategoryModel.Result | string>> {
-    const requiredFields = ['name', 'emoji'];
+    try {
+      const requiredFields = ['name', 'emoji'];
 
-    const hasError = this.validateRequiredFields(request.body, requiredFields);
-    if (hasError) return badRequest(new MissingParamError(hasError));
+      const hasError = this.validateRequiredFields(
+        request.body,
+        requiredFields,
+      );
+      if (hasError) return badRequest(new MissingParamError(hasError));
 
-    const { accountId, name, emoji } = request.body;
+      const { accountId, name, emoji } = request.body;
+      const category = await this.createCategory.execute({
+        accountId,
+        name,
+        emoji,
+      });
 
-    const category = await this.createCategory.execute({
-      accountId,
-      name,
-      emoji,
-    });
-
-    return created({
-      id: category.id,
-      name: category.name,
-    });
+      return created({
+        id: category.id,
+        name: category.name,
+      });
+    } catch (error) {
+      console.error(error);
+      return serverError();
+    }
   }
 }
