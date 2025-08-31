@@ -1,4 +1,4 @@
-export const makcMocks = () => ({
+export const makeCreateCategoryMocks = () => ({
   createCategoryStub: {
     execute: jest.fn().mockResolvedValue({
       id: 'any_category_id',
