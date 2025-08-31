@@ -1,10 +1,13 @@
 import { MissingParamError } from '@/shared/errors';
-import { badRequest } from '@/shared/presentation/helpers/http-response';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/http';
 import { BaseController } from '@/shared/presentation/protocols/Controller';
 import { Controller, Inject, Post, Req } from '@nestjs/common';
 import { CreateCategoryModel } from '../../domain/models/create-category';
 import { CreateCategory } from '../../domain/ports/create-category';
+import {
+  badRequest,
+  created,
+} from '@/shared/presentation/helpers/http-response';
 
 @Controller('category')
 export class CreateCategoryController extends BaseController<
@@ -29,18 +32,15 @@ export class CreateCategoryController extends BaseController<
 
     const { accountId, name, emoji } = request.body;
 
-    await this.createCategory.execute({
+    const category = await this.createCategory.execute({
       accountId,
       name,
       emoji,
     });
 
-    return {
-      statusCode: 201,
-      body: {
-        id: 'any_category_id',
-        name: 'Category created successfully',
-      },
-    };
+    return created({
+      id: category.id,
+      name: category.name,
+    });
   }
 }
