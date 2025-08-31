@@ -26,9 +26,11 @@ describe('CreateCategoryController', () => {
   it('should return bad request if no name is provided', async () => {
     const { sut } = await makeSut();
     const request = {
-      accountId: 'any_account_id',
-      name: undefined,
-      emoji: '🍹',
+      body: {
+        accountId: 'any_account_id',
+        name: undefined,
+        emoji: '🍹',
+      },
     };
     const response = await sut.handle(request);
     expect(response.statusCode).toBe(400);
@@ -38,9 +40,11 @@ describe('CreateCategoryController', () => {
   it('should return bad request if no emoji is provided', async () => {
     const { sut } = await makeSut();
     const request = {
-      accountId: 'any_account_id',
-      name: 'any_category_name',
-      emoji: undefined,
+      body: {
+        accountId: 'any_account_id',
+        name: 'any_category_name',
+        emoji: undefined,
+      },
     };
     const response = await sut.handle(request);
     expect(response.statusCode).toBe(400);

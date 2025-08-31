@@ -1,4 +1,7 @@
 import { MissingParamError } from '@/shared/errors';
+import { badRequest } from '@/shared/presentation/helpers/http-response';
+import { HttpRequest, HttpResponse } from '@/shared/presentation/http';
+import { BaseController } from '@/shared/presentation/protocols/Controller';
 import { Body, Controller, Post } from '@nestjs/common';
 
 interface CreateCategoryDto {
@@ -8,21 +11,14 @@ interface CreateCategoryDto {
 }
 
 @Controller('category')
-export class CreateCategoryController {
+export class CreateCategoryController extends BaseController<CreateCategoryDto> {
   @Post()
-  async handle(@Body() request: CreateCategoryDto): Promise<any> {
-    if (!request.name) {
-      return {
-        statusCode: 400,
-        body: new MissingParamError('name').message,
-      };
-    }
+  async handle(
+    @Body() request: HttpRequest<CreateCategoryDto>,
+  ): Promise<HttpResponse<any | Error>> {
+    const requiredFields = ['name', 'emoji'];
 
-    if (!request.emoji) {
-      return {
-        statusCode: 400,
-        body: new MissingParamError('emoji').message,
-      };
-    }
+    const hasError = this.validateRequiredFields(request.body, requiredFields);
+    if (hasError) return badRequest(new MissingParamError(hasError));
   }
 }
