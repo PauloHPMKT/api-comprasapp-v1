@@ -1,6 +1,6 @@
 import { makeCreateCategorySut } from './__mocks__/create-category/create-category-test-suite';
 import { CreateCategoryController } from './create-category.controller';
-import { MissingParamError } from '@/shared/errors';
+import { MissingParamError, ServerError } from '@/shared/errors';
 
 describe('CreateCategoryController', () => {
   it('should be defined', async () => {
@@ -54,6 +54,23 @@ describe('CreateCategoryController', () => {
       name: 'any_category_name',
       emoji: '🍹',
     });
+  });
+
+  it('should return 500 if AddAccount throws', async () => {
+    const { sut, createCategoryStub } = await makeCreateCategorySut();
+    jest.spyOn(createCategoryStub, 'execute').mockImplementationOnce(() => {
+      throw new Error('Internal server error');
+    });
+    const request = {
+      body: {
+        accountId: 'any_account_id',
+        name: 'any_category_name',
+        emoji: '🍹',
+      },
+    };
+    const promise = await sut.handle(request);
+    expect(promise.statusCode).toBe(500);
+    expect(promise.body).toEqual(new ServerError().message);
   });
 
   it('should return 201 and category data on success', async () => {
