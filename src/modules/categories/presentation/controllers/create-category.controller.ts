@@ -17,5 +17,12 @@ export class CreateCategoryController {
         body: new MissingParamError('name').message,
       };
     }
+
+    if (!request.emoji) {
+      return {
+        statusCode: 400,
+        body: new MissingParamError('emoji').message,
+      };
+    }
   }
 }
