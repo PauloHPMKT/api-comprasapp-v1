@@ -34,4 +34,16 @@ describe('CreateCategoryController', () => {
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual(new MissingParamError('name').message);
   });
+
+  it('should return bad request if no emoji is provided', async () => {
+    const { sut } = await makeSut();
+    const request = {
+      accountId: 'any_account_id',
+      name: 'any_category_name',
+      emoji: undefined,
+    };
+    const response = await sut.handle(request);
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual(new MissingParamError('emoji').message);
+  });
 });
