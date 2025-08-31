@@ -23,7 +23,7 @@ export class SignupController extends BaseController<SignupModel.Params> {
   @Post()
   async handle(
     @Req() request: HttpRequest<SignupModel.Params>,
-  ): Promise<HttpResponse<string | Error>> {
+  ): Promise<HttpResponse<string>> {
     try {
       const requiredFields = [
         'name',
