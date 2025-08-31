@@ -55,4 +55,21 @@ describe('CreateCategoryController', () => {
       emoji: '🍹',
     });
   });
+
+  it('should return 201 and category data on success', async () => {
+    const { sut } = await makeCreateCategorySut();
+    const request = {
+      body: {
+        accountId: 'any_account_id',
+        name: 'any_category_name',
+        emoji: '🍹',
+      },
+    };
+    const response = await sut.handle(request);
+    expect(response.statusCode).toBe(201);
+    expect(response.body).toEqual({
+      id: 'any_category_id',
+      name: 'any_category_name',
+    });
+  });
 });
