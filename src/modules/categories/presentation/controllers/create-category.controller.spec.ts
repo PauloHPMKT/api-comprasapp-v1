@@ -1,30 +1,17 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { makeCreateCategorySut } from './__mocks__/create-category/create-category-test-suite';
 import { CreateCategoryController } from './create-category.controller';
 import { MissingParamError } from '@/shared/errors';
 
-const makeSut = async (): Promise<SutTypes> => {
-  const moduleRef: TestingModule = await Test.createTestingModule({
-    controllers: [CreateCategoryController],
-    providers: [],
-  }).compile();
-  const sut = moduleRef.get<CreateCategoryController>(CreateCategoryController);
-  return { sut };
-};
-
-type SutTypes = {
-  sut: CreateCategoryController;
-};
-
 describe('CreateCategoryController', () => {
   it('should be defined', async () => {
-    const { sut } = await makeSut();
+    const { sut } = await makeCreateCategorySut();
     expect(sut).toBeDefined();
     expect(sut).toBeInstanceOf(CreateCategoryController);
     expect(sut).toBeTruthy();
   });
 
   it('should return bad request if no name is provided', async () => {
-    const { sut } = await makeSut();
+    const { sut } = await makeCreateCategorySut();
     const request = {
       body: {
         accountId: 'any_account_id',
@@ -38,7 +25,7 @@ describe('CreateCategoryController', () => {
   });
 
   it('should return bad request if no emoji is provided', async () => {
-    const { sut } = await makeSut();
+    const { sut } = await makeCreateCategorySut();
     const request = {
       body: {
         accountId: 'any_account_id',
