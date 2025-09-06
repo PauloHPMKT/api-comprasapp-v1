@@ -45,4 +45,21 @@ describe('AuthTokenMiddleware', () => {
     expect(() => sut.use(req, res, next)).toThrow('Token not provided');
     expect(() => sut.use(req, res, next)).toThrow(UnauthorizedException);
   });
+
+  it('should call TokenDecrypter with correct values', async () => {
+    const { sut, tokenDecrypterMock } = await makeSut();
+    const req: Request = {
+      headers: { authorization: 'Bearer any_token' },
+    } as any;
+    const res = {} as any;
+    const next = jest.fn();
+
+    const tokenMock = jest.spyOn(tokenDecrypterMock, 'decrypt');
+
+    sut.use(req, res, next);
+    expect(tokenMock).toHaveBeenCalledWith('any_token');
+    expect(tokenMock).toHaveBeenCalledTimes(1);
+    expect(req['decoded']).toBe('decoded_token');
+    expect(next).toHaveBeenCalled();
+  });
 });
