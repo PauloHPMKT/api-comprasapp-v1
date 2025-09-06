@@ -1,9 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthTokenMiddleware, TokenDecrypter } from './auth-token-middleware';
+import { Request } from 'express';
+import { UnauthorizedException } from '@nestjs/common';
 
 const makeMocks = () => ({
   tokenDecrypterMock: {
-    decrypt: jest.fn(),
+    decrypt: jest.fn().mockReturnValue('decoded_token'),
   },
 });
 
@@ -32,5 +34,15 @@ describe('AuthTokenMiddleware', () => {
     const { sut } = await makeSut();
     expect(sut).toBeDefined();
     expect(sut).toBeInstanceOf(AuthTokenMiddleware);
+  });
+
+  it('should throw UnauthorizedException if no authorization is provided', async () => {
+    const { sut } = await makeSut();
+    const req: Request = { headers: {} } as any;
+    const res = {} as any;
+    const next = jest.fn();
+
+    expect(() => sut.use(req, res, next)).toThrow('Token not provided');
+    expect(() => sut.use(req, res, next)).toThrow(UnauthorizedException);
   });
 });
