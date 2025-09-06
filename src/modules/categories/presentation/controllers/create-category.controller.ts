@@ -1,9 +1,9 @@
-import { MissingParamError } from '@/shared/errors';
-import { HttpRequest, HttpResponse } from '@/shared/presentation/http';
-import { BaseController } from '@/shared/presentation/protocols/Controller';
 import { Controller, Inject, Post, Req } from '@nestjs/common';
 import { CreateCategoryModel } from '../../domain/models/create-category';
 import { CreateCategory } from '../../domain/ports/create-category';
+import { BaseController } from '@/shared/presentation/protocols/Controller';
+import { HttpRequest, HttpResponse } from '@/shared/presentation/http';
+import { MissingParamError } from '@/shared/errors';
 import {
   badRequest,
   created,
