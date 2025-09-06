@@ -28,7 +28,7 @@ export class AuthTokenMiddleware implements NestMiddleware {
       next();
     } catch (error) {
       console.error(error);
-      throw new UnauthorizedException('Invalid token');
+      throw new UnauthorizedException('decoding failed');
     }
   }
 }
