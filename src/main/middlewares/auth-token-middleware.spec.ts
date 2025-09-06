@@ -46,6 +46,22 @@ describe('AuthTokenMiddleware', () => {
     expect(() => sut.use(req, res, next)).toThrow(UnauthorizedException);
   });
 
+  it('should throw UnauthorizedException if TokenDecrypter throws', async () => {
+    const { sut, tokenDecrypterMock } = await makeSut();
+    const req: Request = {
+      headers: { authorization: 'Bearer any_token' },
+    } as any;
+    const res = {} as any;
+    const next = jest.fn();
+
+    jest.spyOn(tokenDecrypterMock, 'decrypt').mockImplementation(() => {
+      throw new Error('decoding failed');
+    });
+
+    expect(() => sut.use(req, res, next)).toThrow('decoding failed');
+    expect(() => sut.use(req, res, next)).toThrow(UnauthorizedException);
+  });
+
   it('should call TokenDecrypter with correct values', async () => {
     const { sut, tokenDecrypterMock } = await makeSut();
     const req: Request = {
