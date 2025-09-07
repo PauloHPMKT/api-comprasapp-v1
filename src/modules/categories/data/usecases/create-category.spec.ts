@@ -1,9 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateCategoryUseCase } from './create-category';
 import { CreateCategoryModel } from '../../domain/models/create-category';
+import { Category } from '../../domain/entities/Category';
+
+jest.mock('../../domain/entities/category', () => ({
+  Category: jest.fn().mockImplementation(() => {
+    return {
+      toJSON: jest.fn().mockReturnValue({
+        id: 'any_id',
+        accountId: 'any_account_id',
+        name: 'any_name',
+        emoji: '❓',
+        createdAt: new Date('2025-01-01T00:00:00Z'),
+      }),
+    };
+  }),
+}));
 
 const makeMocks = () => ({
-  cerifyCategoryExistsStub: {
+  verifyCategoryExistsStub: {
     verify: jest.fn().mockResolvedValue(false),
   },
   createCategoryStub: {
@@ -12,14 +27,14 @@ const makeMocks = () => ({
 });
 
 export const makeSut = async (): Promise<SutTypes> => {
-  const { cerifyCategoryExistsStub, createCategoryStub } = makeMocks();
+  const { verifyCategoryExistsStub, createCategoryStub } = makeMocks();
 
   const moduleRef: TestingModule = await Test.createTestingModule({
     providers: [
       CreateCategoryUseCase,
       {
         provide: 'VERIFY_CATEGORY_EXISTS_REPOSITORY_PORT',
-        useValue: cerifyCategoryExistsStub,
+        useValue: verifyCategoryExistsStub,
       },
       {
         provide: 'CREATE_CATEGORY_REPOSITORY_PORT',
@@ -29,12 +44,12 @@ export const makeSut = async (): Promise<SutTypes> => {
   }).compile();
 
   const sut = moduleRef.get<CreateCategoryUseCase>(CreateCategoryUseCase);
-  return { sut, cerifyCategoryExistsStub, createCategoryStub };
+  return { sut, verifyCategoryExistsStub, createCategoryStub };
 };
 
 type SutTypes = {
   sut: CreateCategoryUseCase;
-  cerifyCategoryExistsStub: {
+  verifyCategoryExistsStub: {
     verify: jest.Mock<Promise<boolean>>;
   };
   createCategoryStub: {
@@ -62,14 +77,14 @@ describe('CreateCategory UseCase', () => {
   });
 
   it('should throw if a category with the same name already exists', async () => {
-    const { sut, cerifyCategoryExistsStub } = await makeSut();
+    const { sut, verifyCategoryExistsStub } = await makeSut();
     const params: CreateCategoryModel.Params = {
       accountId: 'any_account_id',
       name: 'any_name',
       emoji: '❓',
     };
 
-    jest.spyOn(cerifyCategoryExistsStub, 'verify').mockResolvedValueOnce(true);
+    jest.spyOn(verifyCategoryExistsStub, 'verify').mockResolvedValueOnce(true);
 
     const promise = sut.execute(params);
     await expect(promise).rejects.toThrow(
@@ -77,7 +92,23 @@ describe('CreateCategory UseCase', () => {
     );
   });
 
-  it('should call VerifyCategoryExistsRepository with correct values', async () => {
+  it('should call Category Entity with correct params', async () => {
+    const { sut } = await makeSut();
+    const params: CreateCategoryModel.Params = {
+      accountId: '507f1f77bcf86cd799439012',
+      name: 'any_name',
+      emoji: '❓',
+    };
+
+    await sut.execute(params);
+    expect(Category).toHaveBeenCalledWith({
+      accountId: '507f1f77bcf86cd799439012',
+      name: 'any_name',
+      emoji: '❓',
+    });
+  });
+
+  it('should call createCategoryRepository with correct values', async () => {
     const { sut, createCategoryStub } = await makeSut();
     const params: CreateCategoryModel.Params = {
       accountId: 'any_account_id',
