@@ -12,7 +12,7 @@ import {
 
 @Controller('category')
 export class CreateCategoryController extends BaseController<
-  CreateCategoryModel.Params,
+  Omit<CreateCategoryModel.Params, 'accountId'>,
   CreateCategoryModel.Result | string
 > {
   constructor(
@@ -24,10 +24,11 @@ export class CreateCategoryController extends BaseController<
 
   @Post()
   async handle(
-    @Req() request: HttpRequest<CreateCategoryModel.Params>,
+    @Req() request: HttpRequest<Omit<CreateCategoryModel.Params, 'accountId'>>,
   ): Promise<HttpResponse<CreateCategoryModel.Result | string>> {
     try {
       const requiredFields = ['name', 'emoji'];
+      const accountId = request['decoded']?.accountId;
 
       const hasError = this.validateRequiredFields(
         request.body,
@@ -35,7 +36,7 @@ export class CreateCategoryController extends BaseController<
       );
       if (hasError) return badRequest(new MissingParamError(hasError));
 
-      const { accountId, name, emoji } = request.body;
+      const { name, emoji } = request.body;
       const category = await this.createCategory.execute({
         accountId,
         name,
