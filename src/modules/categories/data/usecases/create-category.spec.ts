@@ -6,10 +6,13 @@ const makeMocks = () => ({
   cerifyCategoryExistsStub: {
     verify: jest.fn().mockResolvedValue(false),
   },
+  createCategoryStub: {
+    create: jest.fn().mockResolvedValue({ id: 'any_id', name: 'any_name' }),
+  },
 });
 
 export const makeSut = async (): Promise<SutTypes> => {
-  const { cerifyCategoryExistsStub } = makeMocks();
+  const { cerifyCategoryExistsStub, createCategoryStub } = makeMocks();
 
   const moduleRef: TestingModule = await Test.createTestingModule({
     providers: [
@@ -18,17 +21,24 @@ export const makeSut = async (): Promise<SutTypes> => {
         provide: 'VERIFY_CATEGORY_EXISTS_REPOSITORY_PORT',
         useValue: cerifyCategoryExistsStub,
       },
+      {
+        provide: 'CREATE_CATEGORY_REPOSITORY_PORT',
+        useValue: createCategoryStub,
+      },
     ],
   }).compile();
 
   const sut = moduleRef.get<CreateCategoryUseCase>(CreateCategoryUseCase);
-  return { sut, cerifyCategoryExistsStub };
+  return { sut, cerifyCategoryExistsStub, createCategoryStub };
 };
 
 type SutTypes = {
   sut: CreateCategoryUseCase;
   cerifyCategoryExistsStub: {
     verify: jest.Mock<Promise<boolean>>;
+  };
+  createCategoryStub: {
+    create: jest.Mock<Promise<{ id: string; name: string }>>;
   };
 };
 
@@ -65,5 +75,25 @@ describe('CreateCategory UseCase', () => {
     await expect(promise).rejects.toThrow(
       new Error('Uma categoria com o nome any_nam já existe!'),
     );
+  });
+
+  it('should call VerifyCategoryExistsRepository with correct values', async () => {
+    const { sut, createCategoryStub } = await makeSut();
+    const params: CreateCategoryModel.Params = {
+      accountId: 'any_account_id',
+      name: 'any_name',
+      emoji: '❓',
+    };
+
+    const createCategorySpy = jest.spyOn(createCategoryStub, 'create');
+    await sut.execute(params);
+
+    expect(createCategorySpy).toHaveBeenCalledWith({
+      id: 'any_id',
+      accountId: params.accountId,
+      name: params.name,
+      emoji: params.emoji,
+      createdAt: expect.any(Date),
+    });
   });
 });
