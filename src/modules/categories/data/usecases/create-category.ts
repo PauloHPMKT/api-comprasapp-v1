@@ -31,8 +31,12 @@ export class CreateCategoryUseCase implements CreateCategory {
       emoji: data.emoji,
     }).toJSON();
 
-    await this.createCategoryRepositoryPort.create(category);
+    const { id, name } =
+      await this.createCategoryRepositoryPort.create(category);
 
-    return { id: 'any_id', name: data.name };
+    return {
+      id: id.toString(),
+      name,
+    };
   }
 }

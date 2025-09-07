@@ -127,4 +127,19 @@ describe('CreateCategory UseCase', () => {
       createdAt: expect.any(Date),
     });
   });
+
+  it('should return the created category on success', async () => {
+    const { sut } = await makeSut();
+    const params: CreateCategoryModel.Params = {
+      accountId: 'any_account_id',
+      name: 'any_name',
+      emoji: '❓',
+    };
+
+    const category = await sut.execute(params);
+    expect(category).toEqual({
+      id: 'any_id',
+      name: 'any_name',
+    });
+  });
 });
