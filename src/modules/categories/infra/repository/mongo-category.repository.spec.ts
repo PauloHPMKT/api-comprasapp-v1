@@ -92,4 +92,16 @@ describe('MongoUserRepository', () => {
       },
     ]);
   });
+
+  it('should return true if category exists', async () => {
+    const { sut, findOneMock } = await makeSut();
+    findOneMock.mockResolvedValueOnce({ _id: new ObjectId() });
+    const category = await sut.verify('any_name');
+    expect(findOneMock).toHaveBeenCalledTimes(1);
+    expect(findOneMock).toHaveBeenCalledWith(
+      { name: 'any_name' },
+      { projection: { _id: 1 } },
+    );
+    expect(category).toBe(true);
+  });
 });
