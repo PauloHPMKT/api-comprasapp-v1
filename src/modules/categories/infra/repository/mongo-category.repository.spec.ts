@@ -104,4 +104,18 @@ describe('MongoUserRepository', () => {
     );
     expect(category).toBe(true);
   });
+
+  it('should return false if category does not exist', async () => {
+    const { sut, findOneMock } = await makeSut();
+    findOneMock.mockResolvedValueOnce(null);
+
+    const result = await sut.verify('Inexistente');
+
+    expect(findOneMock).toHaveBeenCalledTimes(1);
+    expect(findOneMock).toHaveBeenCalledWith(
+      { name: 'Inexistente' },
+      { projection: { _id: 1 } },
+    );
+    expect(result).toBe(false);
+  });
 });
