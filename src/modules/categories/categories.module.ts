@@ -1,6 +1,6 @@
 import { Module, Provider } from '@nestjs/common';
 import { makeUseCaseCategoriesProviders } from './domain/providers/usecase.providers';
-import { makeCategoriesRepositoryProviders } from './infra/providers/categories-repository.providers';
+import { makeCategoriesRepositoryProviders } from './data/providers/categories-repository.providers';
 import { CreateCategoryController } from './presentation/controllers/create-category.controller';
 
 const providers: Provider[] = [
