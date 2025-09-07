@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { Category } from '../../domain/entities/Category';
 import { CreateCategory } from '../../domain/ports/create-category';
 import { CreateCategoryModel } from '../../domain/models/create-category';
 import { VerifyCategoryExistsRepository } from '../ports/verify-category-exists';
@@ -24,13 +25,13 @@ export class CreateCategoryUseCase implements CreateCategory {
     if (isCategoryExists)
       throw new Error('Uma categoria com o nome any_nam já existe!');
 
-    await this.createCategoryRepositoryPort.create({
-      id: 'any_id',
+    const category = new Category({
       accountId: data.accountId,
       name: data.name,
       emoji: data.emoji,
-      createdAt: new Date(),
-    });
+    }).toJSON();
+
+    await this.createCategoryRepositoryPort.create(category);
 
     return { id: 'any_id', name: data.name };
   }
