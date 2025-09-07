@@ -14,7 +14,6 @@ describe('CreateCategoryController', () => {
     const { sut } = await makeCreateCategorySut();
     const request = {
       body: {
-        accountId: 'any_account_id',
         name: undefined,
         emoji: '🍹',
       },
@@ -28,7 +27,6 @@ describe('CreateCategoryController', () => {
     const { sut } = await makeCreateCategorySut();
     const request = {
       body: {
-        accountId: 'any_account_id',
         name: 'any_category_name',
         emoji: undefined,
       },
@@ -42,10 +40,10 @@ describe('CreateCategoryController', () => {
     const { sut, createCategoryStub } = await makeCreateCategorySut();
     const request = {
       body: {
-        accountId: 'any_account_id',
         name: 'any_category_name',
         emoji: '🍹',
       },
+      decoded: { accountId: 'any_account_id' },
     };
     const createCategorySpy = jest.spyOn(createCategoryStub, 'execute');
     await sut.handle(request);
@@ -63,7 +61,6 @@ describe('CreateCategoryController', () => {
     });
     const request = {
       body: {
-        accountId: 'any_account_id',
         name: 'any_category_name',
         emoji: '🍹',
       },
@@ -77,7 +74,6 @@ describe('CreateCategoryController', () => {
     const { sut } = await makeCreateCategorySut();
     const request = {
       body: {
-        accountId: 'any_account_id',
         name: 'any_category_name',
         emoji: '🍹',
       },
