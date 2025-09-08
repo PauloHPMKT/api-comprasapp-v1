@@ -4,8 +4,8 @@ import { makeCategoriesRepositoryProviders } from './data/providers/categories-r
 import { CreateCategoryController } from './presentation/controllers/create-category.controller';
 
 const providers: Provider[] = [
-  ...makeUseCaseCategoriesProviders(),
   ...makeCategoriesRepositoryProviders(),
+  ...makeUseCaseCategoriesProviders(),
 ];
 
 @Module({

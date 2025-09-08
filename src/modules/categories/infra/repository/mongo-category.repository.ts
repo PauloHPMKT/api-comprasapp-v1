@@ -3,10 +3,12 @@ import { ToRepositoryModel } from '../../data/models/to-repository';
 import { CreateDefaultCategoriesRepositoryPort } from '../../data/ports/create-default-categories.repository';
 import { VerifyCategoryExistsRepository } from '../../data/ports/verify-category-exists';
 import { MongoHelper } from '@/modules/database/mongodb/helpers/mongo-helper';
+import { CreateCategoryRepositoryPort } from '../../data/ports/create-category';
 
 export class MongoCategoriesRepository
   implements
     CreateDefaultCategoriesRepositoryPort,
+    CreateCategoryRepositoryPort,
     VerifyCategoryExistsRepository
 {
   async addCategories(data: ToRepositoryModel.Category[]): Promise<void> {
