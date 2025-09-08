@@ -1,3 +1,3 @@
 export interface VerifyCategoryExistsRepository {
-  verify: (categoryName: string) => Promise<boolean>;
+  verify: (accountId: string, categoryName: string) => Promise<boolean>;
 }

@@ -20,6 +20,7 @@ export class CreateCategoryUseCase implements CreateCategory {
     if (!data.accountId) throw new Error('accountId não fornecido');
 
     const isCategoryExists = await this.verifyCategoryExistsPort.verify(
+      data.accountId,
       data.name,
     );
     if (isCategoryExists)
