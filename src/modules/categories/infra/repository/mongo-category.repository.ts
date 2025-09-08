@@ -21,6 +21,24 @@ export class MongoCategoriesRepository
     await categoryCollection.insertMany(categories);
   }
 
+  async create(
+    data: ToRepositoryModel.Category,
+  ): Promise<ToRepositoryModel.Result> {
+    const categoryCollection = MongoHelper.getCollection('categories');
+    const result = await categoryCollection.insertOne({
+      _id: MongoHelper.toObjectId(data.id),
+      accountId: data.accountId,
+      name: data.name,
+      emoji: data.emoji,
+      createdAt: data.createdAt,
+    });
+    const { insertedId } = result;
+    return {
+      id: insertedId.toString(),
+      name: data.name,
+    };
+  }
+
   async verify(categoryName: string): Promise<boolean> {
     const categoryCollection = MongoHelper.getCollection('categories');
     const category = await categoryCollection.findOne(

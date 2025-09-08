@@ -34,9 +34,6 @@ export class CreateCategoryUseCase implements CreateCategory {
     const { id, name } =
       await this.createCategoryRepositoryPort.create(category);
 
-    return {
-      id: id.toString(),
-      name,
-    };
+    return { id, name };
   }
 }

@@ -1,8 +1,6 @@
 import { Provider } from '@nestjs/common';
 import { MongoCategoriesRepository } from '../../infra/repository/mongo-category.repository';
 
-class CreateCategoryRepository {}
-
 export const makeCategoriesRepositoryProviders = (): Provider[] => [
   {
     provide: 'CREATE_DEFAULT_CATEGORIES_REPOSITORY_PORT',
@@ -14,6 +12,6 @@ export const makeCategoriesRepositoryProviders = (): Provider[] => [
   },
   {
     provide: 'CREATE_CATEGORY_REPOSITORY_PORT',
-    useClass: CreateCategoryRepository,
+    useClass: MongoCategoriesRepository,
   },
 ];
