@@ -76,6 +76,20 @@ describe('CreateCategory UseCase', () => {
     await expect(promise).rejects.toThrow();
   });
 
+  it('should call verifyCategoryExists with correct category params', async () => {
+    const { sut, verifyCategoryExistsStub } = await makeSut();
+    const params: CreateCategoryModel.Params = {
+      accountId: 'any_account_id',
+      name: 'any_name',
+      emoji: '❓',
+    };
+
+    const verifySpy = jest.spyOn(verifyCategoryExistsStub, 'verify');
+    await sut.execute(params);
+
+    expect(verifySpy).toHaveBeenCalledWith('any_account_id', 'any_name');
+  });
+
   it('should throw if a category with the same name already exists', async () => {
     const { sut, verifyCategoryExistsStub } = await makeSut();
     const params: CreateCategoryModel.Params = {
