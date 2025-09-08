@@ -39,10 +39,10 @@ export class MongoCategoriesRepository
     };
   }
 
-  async verify(categoryName: string): Promise<boolean> {
+  async verify(accountId: string, categoryName: string): Promise<boolean> {
     const categoryCollection = MongoHelper.getCollection('categories');
     const category = await categoryCollection.findOne(
-      { name: categoryName },
+      { accountId, name: categoryName },
       { projection: { _id: 1 } },
     );
     return !!category;

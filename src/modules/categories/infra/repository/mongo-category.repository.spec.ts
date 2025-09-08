@@ -100,11 +100,11 @@ describe('MongoUserRepository', () => {
     const { sut, findOneMock } = await makeSut();
     findOneMock.mockResolvedValueOnce({ _id: new ObjectId() });
 
-    const category = await sut.verify('any_name');
+    const category = await sut.verify('any_account_id', 'any_name');
 
     expect(findOneMock).toHaveBeenCalledTimes(1);
     expect(findOneMock).toHaveBeenCalledWith(
-      { name: 'any_name' },
+      { accountId: 'any_account_id', name: 'any_name' },
       { projection: { _id: 1 } },
     );
     expect(category).toBe(true);
@@ -114,11 +114,11 @@ describe('MongoUserRepository', () => {
     const { sut, findOneMock } = await makeSut();
     findOneMock.mockResolvedValueOnce(null);
 
-    const result = await sut.verify('Inexistente');
+    const result = await sut.verify('any_account_id', 'Inexistente');
 
     expect(findOneMock).toHaveBeenCalledTimes(1);
     expect(findOneMock).toHaveBeenCalledWith(
-      { name: 'Inexistente' },
+      { accountId: 'any_account_id', name: 'Inexistente' },
       { projection: { _id: 1 } },
     );
     expect(result).toBe(false);
