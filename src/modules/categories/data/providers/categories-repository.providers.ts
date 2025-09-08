@@ -1,7 +1,6 @@
 import { Provider } from '@nestjs/common';
 import { MongoCategoriesRepository } from '../../infra/repository/mongo-category.repository';
 
-class VerifyCategoryExistsRepository {}
 class CreateCategoryRepository {}
 
 export const makeCategoriesRepositoryProviders = (): Provider[] => [
@@ -11,7 +10,7 @@ export const makeCategoriesRepositoryProviders = (): Provider[] => [
   },
   {
     provide: 'VERIFY_CATEGORY_EXISTS_REPOSITORY_PORT',
-    useValue: VerifyCategoryExistsRepository,
+    useValue: MongoCategoriesRepository,
   },
   {
     provide: 'CREATE_CATEGORY_REPOSITORY_PORT',
