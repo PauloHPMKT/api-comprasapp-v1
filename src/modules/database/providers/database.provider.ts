@@ -1,13 +1,15 @@
 import { Provider } from '@nestjs/common';
 import { MongoHelper } from '../mongodb/helpers/mongo-helper';
+import { EnvConfigService } from '@/shared/env-config/env-config.service';
 
 export const makeDatabaseProviders: Provider[] = [
   {
     provide: 'DATABSE_CONNECTION',
-    useFactory: async () => {
-      const uri = process.env.MONGO_URI || 'mongodb://db:27017/comprasapp';
+    useFactory: async (envConfig: EnvConfigService) => {
+      const uri = envConfig.getEnv('DATABASE_URL');
       await MongoHelper.connect(uri);
       return MongoHelper.client;
     },
+    inject: [EnvConfigService],
   },
 ];
