@@ -6,10 +6,12 @@ import { ObjectId } from 'mongodb';
 const makeSut = async (): Promise<SutTypes> => {
   const findOneMock = jest.fn();
   const insertManyMock = jest.fn();
+  const insertOneMock = jest.fn();
 
   jest.spyOn(MongoHelper, 'getCollection').mockReturnValue({
     findOne: findOneMock,
     insertMany: insertManyMock,
+    insertOne: insertOneMock,
   } as any);
 
   const moduleRef: TestingModule = await Test.createTestingModule({
@@ -20,13 +22,14 @@ const makeSut = async (): Promise<SutTypes> => {
     MongoCategoriesRepository,
   );
 
-  return { sut, findOneMock, insertManyMock };
+  return { sut, findOneMock, insertManyMock, insertOneMock };
 };
 
 type SutTypes = {
   sut: MongoCategoriesRepository;
   findOneMock: jest.Mock;
   insertManyMock: jest.Mock;
+  insertOneMock: jest.Mock;
 };
 
 describe('MongoUserRepository', () => {
@@ -96,7 +99,9 @@ describe('MongoUserRepository', () => {
   it('should return true if category exists', async () => {
     const { sut, findOneMock } = await makeSut();
     findOneMock.mockResolvedValueOnce({ _id: new ObjectId() });
+
     const category = await sut.verify('any_name');
+
     expect(findOneMock).toHaveBeenCalledTimes(1);
     expect(findOneMock).toHaveBeenCalledWith(
       { name: 'any_name' },
@@ -117,5 +122,32 @@ describe('MongoUserRepository', () => {
       { projection: { _id: 1 } },
     );
     expect(result).toBe(false);
+  });
+
+  it('should add a new account', async () => {
+    const { sut, insertOneMock } = await makeSut();
+    const insertedId = new ObjectId('507f1f77bcf86cd799439012');
+    const params = {
+      id: insertedId.toString(),
+      accountId: 'any_account_id',
+      name: 'any_name',
+      emoji: '🛒',
+      createdAt: new Date(),
+    };
+    insertOneMock.mockResolvedValue({ insertedId: insertedId });
+    await sut.create(params);
+    expect(insertOneMock).toHaveBeenCalledWith({
+      _id: MongoHelper.toObjectId(params.id),
+      accountId: params.accountId,
+      name: params.name,
+      emoji: params.emoji,
+      createdAt: params.createdAt,
+    });
+    expect(insertedId.toHexString()).toBe('507f1f77bcf86cd799439012');
+    expect(insertedId.toHexString()).toEqual(params.id);
+    expect(insertedId.toHexString()).toBeDefined();
+    expect(insertedId.toHexString()).toBeTruthy();
+    expect(insertedId.toHexString()).not.toBeNull();
+    expect(insertOneMock).toHaveBeenCalledTimes(1);
   });
 });
