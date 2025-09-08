@@ -3,7 +3,7 @@ import { CreateCategoryModel } from '../../domain/models/create-category';
 import { CreateCategory } from '../../domain/ports/create-category';
 import { BaseController } from '@/shared/presentation/protocols/Controller';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/http';
-import { MissingParamError } from '@/shared/errors';
+import { CategoryAlreadyExistsError, MissingParamError } from '@/shared/errors';
 import {
   badRequest,
   created,
@@ -43,12 +43,14 @@ export class CreateCategoryController extends BaseController<
         emoji,
       });
 
-      return created({
+      return created<CreateCategoryModel.Result>({
         id: category.id,
         name: category.name,
       });
     } catch (error) {
-      console.error(error);
+      if (error instanceof CategoryAlreadyExistsError) {
+        return badRequest(error);
+      }
       return serverError();
     }
   }

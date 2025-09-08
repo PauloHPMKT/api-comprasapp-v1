@@ -1,0 +1,8 @@
+POST http://localhost:3000/category
+Content-Type: application/json
+Authorization: Bearer your_jwt_token_here
+
+{
+  "name": "any_category_name",
+  "emoji": "🍹"
+}

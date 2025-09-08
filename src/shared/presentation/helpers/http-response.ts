@@ -12,9 +12,9 @@ export const conflict = (error: Error): HttpResponse<string> => ({
   body: error.message,
 });
 
-export const serverError = (): HttpResponse<string> => ({
+export const serverError = (error?: string): HttpResponse<string> => ({
   statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-  body: new ServerError().message,
+  body: new ServerError(error).message,
 });
 
 export const created = <T = any>(data: T): HttpResponse<T> => ({

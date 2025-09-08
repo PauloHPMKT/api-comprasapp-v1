@@ -1,0 +1,51 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://marketplace.visualstudio.com/items?itemName=pomdtr.excalidraw-editor",
+  "elements": [
+    {
+      "id": "zo4AKDHFud0mq0bQ4Hk3F",
+      "type": "text",
+      "x": 674.3782348632812,
+      "y": 135.1725311279297,
+      "width": 504.1396789550781,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a0",
+      "roundness": null,
+      "seed": 439529860,
+      "version": 112,
+      "versionNonce": 1088149820,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1753641398470,
+      "link": null,
+      "locked": false,
+      "text": "Fluxo de comunicação interno ao módulo de Account",
+      "fontSize": 20,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Fluxo de comunicação interno ao módulo de Account",
+      "autoResize": true,
+      "lineHeight": 1.25
+    }
+  ],
+  "appState": {
+    "gridSize": 20,
+    "gridStep": 5,
+    "gridModeEnabled": false,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

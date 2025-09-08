@@ -1,6 +1,10 @@
 import { makeCreateCategorySut } from './__mocks__/create-category/create-category-test-suite';
 import { CreateCategoryController } from './create-category.controller';
-import { MissingParamError, ServerError } from '@/shared/errors';
+import {
+  CategoryAlreadyExistsError,
+  MissingParamError,
+  ServerError,
+} from '@/shared/errors';
 
 describe('CreateCategoryController', () => {
   it('should be defined', async () => {
@@ -68,6 +72,24 @@ describe('CreateCategoryController', () => {
     const promise = await sut.handle(request);
     expect(promise.statusCode).toBe(500);
     expect(promise.body).toEqual(new ServerError().message);
+  });
+
+  it('should return bad request if category already exists', async () => {
+    const { sut, createCategoryStub } = await makeCreateCategorySut();
+    const requesr = {
+      body: {
+        name: 'any_category_name',
+        emoji: '🍹',
+      },
+    };
+    jest.spyOn(createCategoryStub, 'execute').mockImplementationOnce(() => {
+      throw new CategoryAlreadyExistsError('any_category_name');
+    });
+    const response = await sut.handle(requesr);
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual(
+      'Uma categoria com o nome any_category_name já existe!',
+    );
   });
 
   it('should return 201 and category data on success', async () => {

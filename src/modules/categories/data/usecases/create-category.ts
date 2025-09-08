@@ -4,6 +4,7 @@ import { CreateCategory } from '../../domain/ports/create-category';
 import { CreateCategoryModel } from '../../domain/models/create-category';
 import { VerifyCategoryExistsRepository } from '../ports/verify-category-exists';
 import { CreateCategoryRepositoryPort } from '../ports/create-category';
+import { CategoryAlreadyExistsError } from '@/shared/errors';
 
 @Injectable()
 export class CreateCategoryUseCase implements CreateCategory {
@@ -23,8 +24,7 @@ export class CreateCategoryUseCase implements CreateCategory {
       data.accountId,
       data.name,
     );
-    if (isCategoryExists)
-      throw new Error('Uma categoria com o nome any_nam já existe!');
+    if (isCategoryExists) throw new CategoryAlreadyExistsError(data.name);
 
     const category = new Category({
       accountId: data.accountId,

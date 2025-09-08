@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CreateCategoryUseCase } from './create-category';
 import { CreateCategoryModel } from '../../domain/models/create-category';
 import { Category } from '../../domain/entities/Category';
+import { CategoryAlreadyExistsError } from '@/shared/errors';
 
 jest.mock('../../domain/entities/category', () => ({
   Category: jest.fn().mockImplementation(() => {
@@ -102,7 +103,7 @@ describe('CreateCategory UseCase', () => {
 
     const promise = sut.execute(params);
     await expect(promise).rejects.toThrow(
-      new Error('Uma categoria com o nome any_nam já existe!'),
+      new CategoryAlreadyExistsError('any_name'),
     );
   });
 
