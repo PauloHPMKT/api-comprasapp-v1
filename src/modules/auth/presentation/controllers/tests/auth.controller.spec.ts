@@ -21,4 +21,17 @@ describe('AuthController', () => {
     expect(result.statusCode).toBe(400);
     expect(result.body).toBe(new MissingParamError('email').message);
   });
+
+  it('should return badRequest if no password is provided', async () => {
+    const { sut } = await makeAuthControllerSut();
+    const request = {
+      body: {
+        email: '',
+        password: 'anypassword',
+      },
+    };
+    const result = await sut.handle(request);
+    expect(result.statusCode).toBe(400);
+    expect(result.body).toBe(new MissingParamError('email').message);
+  });
 });
