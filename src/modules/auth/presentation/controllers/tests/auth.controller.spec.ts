@@ -1,4 +1,4 @@
-import { MissingParamError } from '@/shared/errors';
+import { MissingParamError, ServerError } from '@/shared/errors';
 import { AuthController } from '../auth.controller';
 import { makeAuthControllerSut } from './__mocks__/auth.controller-test-suite';
 
@@ -49,5 +49,21 @@ describe('AuthController', () => {
       email: 'valid_email@mail.com',
       password: 'anypassword',
     });
+  });
+
+  it('should throw a server error if Signin throws', async () => {
+    const { sut, signinStub } = await makeAuthControllerSut();
+    jest.spyOn(signinStub, 'execute').mockImplementationOnce(() => {
+      throw new Error('Internal server error');
+    });
+    const request = {
+      body: {
+        email: 'valid_email@mail.com',
+        password: 'anypassword',
+      },
+    };
+    const response = await sut.handle(request);
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toEqual(new ServerError().message);
   });
 });
