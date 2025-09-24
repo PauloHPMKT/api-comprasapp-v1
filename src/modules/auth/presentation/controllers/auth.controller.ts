@@ -7,6 +7,7 @@ import { BaseController } from '@/shared/presentation/protocols/Controller';
 import {
   badRequest,
   serverError,
+  ok,
 } from '@/shared/presentation/helpers/http-response';
 
 @Controller('auth')
@@ -32,7 +33,9 @@ export class AuthController extends BaseController<AuthModel.Signin> {
       if (hasError) return badRequest(new MissingParamError(hasError));
 
       const { email, password } = request.body;
-      await this.signin.execute({ email, password });
+      const response = await this.signin.execute({ email, password });
+
+      return ok<AuthModel.SigninResult>(response);
     } catch (error) {
       console.error(error);
       return serverError();

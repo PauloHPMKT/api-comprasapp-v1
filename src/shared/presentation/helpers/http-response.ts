@@ -21,3 +21,8 @@ export const created = <T = any>(data: T): HttpResponse<T> => ({
   statusCode: HttpStatus.CREATED,
   body: data,
 });
+
+export const ok = <T = any>(data: T): HttpResponse<T> => ({
+  statusCode: HttpStatus.OK,
+  body: data,
+});
