@@ -26,12 +26,12 @@ describe('AuthController', () => {
     const { sut } = await makeAuthControllerSut();
     const request = {
       body: {
-        email: '',
-        password: 'anypassword',
+        email: 'valid_email@mail.com',
+        password: '',
       },
     };
     const result = await sut.handle(request);
     expect(result.statusCode).toBe(400);
-    expect(result.body).toBe(new MissingParamError('email').message);
+    expect(result.body).toBe(new MissingParamError('password').message);
   });
 });
