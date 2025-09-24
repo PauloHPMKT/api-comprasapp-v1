@@ -66,4 +66,19 @@ describe('AuthController', () => {
     expect(response.statusCode).toBe(500);
     expect(response.body).toEqual(new ServerError().message);
   });
+
+  it('should return 200 if all valid data is provided to login', async () => {
+    const { sut } = await makeAuthControllerSut();
+    const request = {
+      body: {
+        email: 'valid_email@mail.com',
+        password: 'anypassword',
+      },
+    };
+    const response = await sut.handle(request);
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ accessToken: 'valid_token' });
+    expect(response.body).not.toBeNull();
+    expect(response.body).toHaveProperty('accessToken');
+  });
 });
