@@ -8,7 +8,7 @@ import { Controller, Post, Req } from '@nestjs/common';
 export class AuthController extends BaseController<any, any> {
   @Post()
   async handle(@Req() request: HttpRequest<any>): Promise<HttpResponse<any>> {
-    const requiredFields = ['email'];
+    const requiredFields = ['email', 'password'];
 
     const hasError = this.validateRequiredFields(request.body, requiredFields);
     if (hasError) return badRequest(new MissingParamError(hasError));
