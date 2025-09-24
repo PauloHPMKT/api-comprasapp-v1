@@ -34,4 +34,20 @@ describe('AuthController', () => {
     expect(result.statusCode).toBe(400);
     expect(result.body).toBe(new MissingParamError('password').message);
   });
+
+  it('show should call Signin with correct params', async () => {
+    const { sut, signinStub } = await makeAuthControllerSut();
+    const executeSpy = jest.spyOn(signinStub, 'execute');
+    const request = {
+      body: {
+        email: 'valid_email@mail.com',
+        password: 'anypassword',
+      },
+    };
+    await sut.handle(request);
+    expect(executeSpy).toHaveBeenCalledWith({
+      email: 'valid_email@mail.com',
+      password: 'anypassword',
+    });
+  });
 });
