@@ -2,9 +2,12 @@ import { Controller, Inject, Post, Req } from '@nestjs/common';
 import { AuthModel } from '../../domain/models/auth';
 import { SigninPort } from '../../domain/usecases/signin';
 import { MissingParamError } from '@/shared/errors';
-import { badRequest } from '@/shared/presentation/helpers/http-response';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/http';
 import { BaseController } from '@/shared/presentation/protocols/Controller';
+import {
+  badRequest,
+  serverError,
+} from '@/shared/presentation/helpers/http-response';
 
 @Controller('auth')
 export class AuthController extends BaseController<AuthModel.Signin> {
@@ -19,12 +22,20 @@ export class AuthController extends BaseController<AuthModel.Signin> {
   async handle(
     @Req() request: HttpRequest<AuthModel.Signin>,
   ): Promise<HttpResponse<AuthModel.SigninResult | string>> {
-    const requiredFields = ['email', 'password'];
+    try {
+      const requiredFields = ['email', 'password'];
 
-    const hasError = this.validateRequiredFields(request.body, requiredFields);
-    if (hasError) return badRequest(new MissingParamError(hasError));
+      const hasError = this.validateRequiredFields(
+        request.body,
+        requiredFields,
+      );
+      if (hasError) return badRequest(new MissingParamError(hasError));
 
-    const { email, password } = request.body;
-    await this.signin.execute({ email, password });
+      const { email, password } = request.body;
+      await this.signin.execute({ email, password });
+    } catch (error) {
+      console.error(error);
+      return serverError();
+    }
   }
 }
