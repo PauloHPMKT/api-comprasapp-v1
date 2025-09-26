@@ -25,4 +25,19 @@ describe('SigninUsecase', () => {
       password: 'any_password',
     });
   });
+
+  it('should throw if validateUserCredentials throws (invalid credentials)', async () => {
+    const { sut, validateUserCredentialsStub } = await makeSigninUsecaseSut();
+    const error = new Error('Invalid credentials');
+    jest
+      .spyOn(validateUserCredentialsStub, 'validate')
+      .mockImplementationOnce(() => {
+        throw error;
+      });
+    const params = {
+      email: 'invalid_email',
+      password: 'invalid_password',
+    };
+    await expect(sut.execute(params)).rejects.toThrow('Invalid credentials');
+  });
 });
