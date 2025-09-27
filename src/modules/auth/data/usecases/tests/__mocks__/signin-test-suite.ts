@@ -3,21 +3,29 @@ import { SigninUsecase } from '../../signin';
 import { mocksSigninParams } from './signin.mocks';
 import { FindUserIdByEmailRepository } from '../../../repositories/find-user-id-by-email.repository';
 import { TokenPayloadModel } from '../../../../domain/models/token-payload';
+import { GenerateToken } from '../../../repositories/token-generator';
 
 export const makeSigninUsecaseSut = async (): Promise<SutTypes> => {
-  const { validateUserCredentialsStub, findUserIdByEmailStub } =
-    mocksSigninParams();
+  const {
+    validateUserCredentialsStub,
+    findUserIdByEmailStub,
+    generateTokenStub,
+  } = mocksSigninParams();
   const moduleRef: TestingModule = await Test.createTestingModule({
     controllers: [],
     providers: [
       SigninUsecase,
       {
-        provide: 'FIND_USER_ID_BY_EMAIL_REPOSITORY',
+        provide: 'FIND_USER_ID_BY_EMAIL_REPOSITORY_PORT',
         useValue: findUserIdByEmailStub,
       },
       {
         provide: 'VALIDATE_USER_CREDENTIALS',
         useValue: validateUserCredentialsStub,
+      },
+      {
+        provide: 'GENERATE_TOKEN_PORT',
+        useValue: generateTokenStub,
       },
     ],
   }).compile();
@@ -27,6 +35,7 @@ export const makeSigninUsecaseSut = async (): Promise<SutTypes> => {
     sut,
     findUserIdByEmailStub,
     validateUserCredentialsStub,
+    generateTokenStub,
   };
 };
 
@@ -40,5 +49,8 @@ type SutTypes = {
   };
   findUserIdByEmailStub: {
     findByEmail: jest.Mock<FindUserIdByEmailRepository>;
+  };
+  generateTokenStub: {
+    generate: jest.Mock<Promise<GenerateToken>, [TokenPayloadModel.Params]>;
   };
 };

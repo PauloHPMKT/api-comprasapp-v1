@@ -13,4 +13,7 @@ export const mocksSigninParams = () => ({
   findUserIdByEmailStub: {
     findByEmail: jest.fn().mockResolvedValue('any_user_id'),
   },
+  generateTokenStub: {
+    generate: jest.fn().mockResolvedValue('valid_token'),
+  },
 });

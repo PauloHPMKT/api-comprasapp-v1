@@ -88,4 +88,24 @@ describe('SigninUsecase', () => {
       createdAt,
     });
   });
+
+  it('should call generateToken with correct userId', async () => {
+    const { sut, generateTokenStub } = await makeSigninUsecaseSut();
+    const generateTokenSpy = jest.spyOn(generateTokenStub, 'generate');
+    const params = {
+      email: 'any_email',
+      password: 'any_password',
+    };
+    const promise = sut.execute(params);
+    await expect(promise).resolves.not.toThrow();
+    expect(generateTokenSpy).toHaveBeenCalledWith({
+      id: 'valid_id',
+      name: 'valid_name',
+      email: 'valid_email',
+      avatar: null,
+      accountId: 'valid_account_id',
+      plan: 'free',
+      createdAt: new Date('2025-09-27T01:56:39.666Z'),
+    });
+  });
 });
