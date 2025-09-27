@@ -1,16 +1,6 @@
 import { Provider } from '@nestjs/common';
 import { ValidateUserService } from '../../domain/services/validate-user.service';
-import { CompareIfPasswordIsValid } from '@/modules/encrypter/domain/ports/compare-if-password-is-valid';
-
-class CompareIfPasswordIsValidAdapter implements CompareIfPasswordIsValid {
-  async compare(
-    inputPassword: string,
-    hashedPassword: string,
-  ): Promise<boolean> {
-    console.log(inputPassword, hashedPassword);
-    throw new Error('Method not implemented.');
-  }
-}
+import { BcryptAdapter } from '@/modules/encrypter/adapters/bcrypt.adapter';
 
 export const makeServiceProvider = (): Provider[] => [
   {
@@ -19,6 +9,6 @@ export const makeServiceProvider = (): Provider[] => [
   },
   {
     provide: 'COMPARE_IF_PASSWORD_IS_VALID',
-    useClass: CompareIfPasswordIsValidAdapter,
+    useClass: BcryptAdapter,
   },
 ];
