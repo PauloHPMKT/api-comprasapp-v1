@@ -1,3 +1,5 @@
+import { TokenPayloadModel } from '../../domain/models/token-payload';
+
 export interface ValidateUserCredentials {
   validate({
     email,
@@ -5,5 +7,5 @@ export interface ValidateUserCredentials {
   }: {
     email: string;
     password: string;
-  }): Promise<boolean>;
+  }): Promise<TokenPayloadModel.Params>;
 }
