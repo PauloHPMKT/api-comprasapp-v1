@@ -14,6 +14,6 @@ const providers: Provider[] = [
   imports: [],
   controllers: [AuthController],
   providers,
-  exports: [],
+  exports: ['FIND_USER_ID_BY_EMAIL_REPOSITORY_PORT'],
 })
 export class AuthModule {}

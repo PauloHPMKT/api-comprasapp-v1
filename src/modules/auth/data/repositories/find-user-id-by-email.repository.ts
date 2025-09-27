@@ -1,3 +1,3 @@
-export interface FindUserIdByEmailRepository {
-  findByEmail(email: string): Promise<string>;
+export interface FindUserIdByEmailRepositoryPort {
+  findByEmail(email: string): Promise<string | null>;
 }

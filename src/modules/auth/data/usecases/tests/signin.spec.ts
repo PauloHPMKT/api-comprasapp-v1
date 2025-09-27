@@ -89,7 +89,7 @@ describe('SigninUsecase', () => {
     });
   });
 
-  it('should call generateToken with correct userId', async () => {
+  it('should call generateToken with correct user and account payload', async () => {
     const { sut, generateTokenStub } = await makeSigninUsecaseSut();
     const generateTokenSpy = jest.spyOn(generateTokenStub, 'generate');
     const params = {

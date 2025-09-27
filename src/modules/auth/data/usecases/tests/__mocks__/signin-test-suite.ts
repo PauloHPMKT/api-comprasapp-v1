@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SigninUsecase } from '../../signin';
 import { mocksSigninParams } from './signin.mocks';
-import { FindUserIdByEmailRepository } from '../../../repositories/find-user-id-by-email.repository';
+import { FindUserIdByEmailRepositoryPort } from '../../../repositories/find-user-id-by-email.repository';
 import { TokenPayloadModel } from '../../../../domain/models/token-payload';
 import { GenerateToken } from '../../../repositories/token-generator';
 
@@ -48,7 +48,7 @@ type SutTypes = {
     >;
   };
   findUserIdByEmailStub: {
-    findByEmail: jest.Mock<FindUserIdByEmailRepository>;
+    findByEmail: jest.Mock<FindUserIdByEmailRepositoryPort>;
   };
   generateTokenStub: {
     generate: jest.Mock<Promise<GenerateToken>, [TokenPayloadModel.Params]>;

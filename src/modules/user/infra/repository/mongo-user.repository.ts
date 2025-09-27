@@ -3,10 +3,14 @@ import { CreateUserRepositoryModel } from '../../data/models/user-repository.mod
 import { CreateUserRepositoryPort } from '../../data/ports/create-user.repository';
 import { IsExistsUserRepositoryPort } from '../../data/ports/is-exists-user.repository';
 import { MongoHelper } from '@/modules/database/mongodb/helpers/mongo-helper';
+import { FindUserIdByEmailRepositoryPort } from '@/modules/auth/data/repositories/find-user-id-by-email.repository';
 
 @Injectable()
 export class MongoUserRepository
-  implements IsExistsUserRepositoryPort, CreateUserRepositoryPort
+  implements
+    IsExistsUserRepositoryPort,
+    CreateUserRepositoryPort,
+    FindUserIdByEmailRepositoryPort
 {
   async exists(email: string): Promise<boolean> {
     const usersCollection = MongoHelper.getCollection('users');
@@ -35,5 +39,18 @@ export class MongoUserRepository
     const { id, email } = MongoHelper.map(user);
 
     return { id, email };
+  }
+
+  async findByEmail(email: string): Promise<string | null> {
+    const usersCollection = MongoHelper.getCollection('users');
+    const user = await usersCollection.findOne(
+      { email },
+      { projection: { _id: 1 } },
+    );
+    console.log('cheguei ate aqui!!!');
+    if (!user) {
+      return null;
+    }
+    return MongoHelper.map(user).id;
   }
 }
