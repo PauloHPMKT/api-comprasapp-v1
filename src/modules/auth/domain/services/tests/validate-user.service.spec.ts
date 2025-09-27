@@ -25,6 +25,20 @@ describe('ValidateUserService', () => {
     );
   });
 
+  it('should return null if user not found', async () => {
+    const { sut, getAccountByUserIdRepositoryPortStub } =
+      await makeValidateUserSut();
+    jest
+      .spyOn(getAccountByUserIdRepositoryPortStub, 'getAccount')
+      .mockImplementationOnce(null);
+    const params = {
+      id: 'invalid_user_id',
+      password: 'any_password',
+    };
+    const account = await sut.validate(params);
+    expect(account).toBeNull();
+  });
+
   it('should calls compareIfPasswordIsValid with correct values', async () => {
     const { sut, compareIfPasswordIsValidStub } = await makeValidateUserSut();
     const params = {
