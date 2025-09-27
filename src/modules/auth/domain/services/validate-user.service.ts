@@ -13,20 +13,20 @@ export class ValidateUserService implements ValidateUserCredentials {
     private readonly compareIfPasswordIsValid: CompareIfPasswordIsValid,
   ) {}
 
-  async validate({ id, password }): Promise<TokenPayloadModel.Params> {
+  async validate({ id, password }): Promise<TokenPayloadModel.Result | null> {
     const account = await this.getAccountByUserIdRepository.getAccount(id);
     if (account) {
-      await this.compareIfPasswordIsValid.compare(password, account.password);
-    }
+      const isValidPassword = await this.compareIfPasswordIsValid.compare(
+        password,
+        account.password,
+      );
 
-    return {
-      id: 'valid_id',
-      name: 'valid_name',
-      email: 'valid_email',
-      avatar: null,
-      accountId: 'valid_account_id',
-      plan: 'free',
-      createdAt: new Date('2025-09-27T01:56:39.666Z'),
-    };
+      if (isValidPassword) {
+        return {
+          ...account,
+          password: undefined,
+        };
+      }
+    }
   }
 }

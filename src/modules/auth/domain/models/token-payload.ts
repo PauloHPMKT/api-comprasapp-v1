@@ -8,4 +8,6 @@ export namespace TokenPayloadModel {
     plan: string;
     createdAt: Date;
   }
+
+  export type Result = Params & { password?: string | null };
 }
