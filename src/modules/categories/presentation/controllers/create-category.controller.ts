@@ -28,7 +28,7 @@ export class CreateCategoryController extends BaseController<
   ): Promise<HttpResponse<CreateCategoryModel.Result | string>> {
     try {
       const requiredFields = ['name', 'emoji'];
-      const accountId = request['decoded']?.accountId;
+      const accountId = request['decoded']?.sub;
 
       const hasError = this.validateRequiredFields(
         request.body,

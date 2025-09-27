@@ -47,7 +47,7 @@ describe('CreateCategoryController', () => {
         name: 'any_category_name',
         emoji: '🍹',
       },
-      decoded: { accountId: 'any_account_id' },
+      decoded: { sub: 'any_account_id' },
     };
     const createCategorySpy = jest.spyOn(createCategoryStub, 'execute');
     await sut.handle(request);
