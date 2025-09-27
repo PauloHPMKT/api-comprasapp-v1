@@ -5,7 +5,7 @@ export const mocksSigninParams = () => ({
       name: 'valid_name',
       email: 'valid_email',
       avatar: null,
-      accountId: 'valid_account_id',
+      userId: 'valid_user_id',
       plan: 'free',
       createdAt: new Date('2025-09-27T01:56:39.666Z'),
     }),

@@ -56,7 +56,7 @@ describe('ValidateUserService', () => {
     );
   });
 
-  it('should return a valid account data withoun password', async () => {
+  it('should return a valid account data without password', async () => {
     const { sut } = await makeValidateUserSut();
     const params = {
       id: 'valid_user_id',
@@ -68,7 +68,7 @@ describe('ValidateUserService', () => {
       name: 'valid_name',
       email: 'valid_email',
       avatar: null,
-      accountId: 'valid_account_id',
+      userId: 'valid_user_id',
       plan: 'free',
       createdAt: new Date('2025-09-27T01:56:39.666Z'),
     });

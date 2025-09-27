@@ -28,7 +28,7 @@ export class ValidateUserService implements ValidateUserCredentials {
       name: account.name,
       email: account.email,
       avatar: account.avatar,
-      accountId: account.accountId,
+      userId: account.userId,
       plan: account.plan,
       createdAt: account.createdAt,
     };

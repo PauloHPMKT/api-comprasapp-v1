@@ -4,7 +4,7 @@ export namespace TokenPayloadModel {
     name: string;
     email: string;
     avatar: string | null;
-    accountId: string;
+    userId: string;
     plan: string;
     createdAt: Date;
   }

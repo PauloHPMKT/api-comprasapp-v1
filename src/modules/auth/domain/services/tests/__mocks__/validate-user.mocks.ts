@@ -6,7 +6,7 @@ export const makeValidateUserServiceMock = () => ({
       email: 'valid_email',
       password: 'hashed_password',
       avatar: null,
-      accountId: 'valid_account_id',
+      userId: 'valid_user_id',
       plan: 'free',
       createdAt: new Date('2025-09-27T01:56:39.666Z'),
     }),
