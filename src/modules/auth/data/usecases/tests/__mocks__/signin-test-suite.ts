@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SigninUsecase } from '../../signin';
 import { mocksSigninParams } from './signin.mocks';
-import { ValidateUserCredentials } from '../../../protocols/validate-user-credentials';
 import { FindUserIdByEmailRepository } from '../../../repositories/find-user-id-by-email.repository';
+import { TokenPayloadModel } from '../../../../domain/models/token-payload';
 
 export const makeSigninUsecaseSut = async (): Promise<SutTypes> => {
   const { validateUserCredentialsStub, findUserIdByEmailStub } =
@@ -32,7 +32,12 @@ export const makeSigninUsecaseSut = async (): Promise<SutTypes> => {
 
 type SutTypes = {
   sut: SigninUsecase;
-  validateUserCredentialsStub: { validate: jest.Mock<ValidateUserCredentials> };
+  validateUserCredentialsStub: {
+    validate: jest.Mock<
+      Promise<TokenPayloadModel.Params>,
+      [{ email: string; password: string }]
+    >;
+  };
   findUserIdByEmailStub: {
     findByEmail: jest.Mock<FindUserIdByEmailRepository>;
   };

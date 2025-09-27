@@ -65,4 +65,27 @@ describe('SigninUsecase', () => {
     };
     await expect(sut.execute(params)).rejects.toThrow('Invalid credentials');
   });
+
+  it('should return user and account data for payload on success', async () => {
+    const { sut, validateUserCredentialsStub } = await makeSigninUsecaseSut();
+    const params = {
+      email: 'any_email',
+      password: 'any_password',
+    };
+    const createdAt = new Date('2025-09-27T01:56:39.666Z');
+    const validateCredentials = await validateUserCredentialsStub.validate({
+      email: 'any_email',
+      password: 'any_password',
+    });
+    await sut.execute(params);
+    expect(validateCredentials).toEqual({
+      id: 'valid_id',
+      name: 'valid_name',
+      email: 'valid_email',
+      avatar: null,
+      accountId: 'valid_account_id',
+      plan: 'free',
+      createdAt,
+    });
+  });
 });
