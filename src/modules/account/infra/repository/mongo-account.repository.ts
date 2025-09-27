@@ -69,6 +69,6 @@ export class MongoAccountRepository
       },
     ]);
 
-    return account.hasNext() ? await account.next() : null;
+    return (await account.hasNext()) ? await account.next() : null;
   }
 }
