@@ -23,6 +23,16 @@ describe('SigninUsecase', () => {
     expect(findUserIdByEmailSpy).toHaveBeenCalledWith('any_email');
   });
 
+  it('should throw if user is not found', async () => {
+    const { sut, findUserIdByEmailStub } = await makeSigninUsecaseSut();
+    jest.spyOn(findUserIdByEmailStub, 'findByEmail').mockReturnValueOnce(null);
+    const params = {
+      email: 'invalid_email',
+      password: 'invalid_password',
+    };
+    await expect(sut.execute(params)).rejects.toThrow('User not found');
+  });
+
   it('should call validateUserCredentials with correct values', async () => {
     const { sut, validateUserCredentialsStub } = await makeSigninUsecaseSut();
     const validateUserCredentialsSpy = jest.spyOn(
