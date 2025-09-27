@@ -1,8 +1,10 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlOWIxM2Q4ODk5ODY2NTE4ZWEyZTJiODAiLCJuYW1lIjoiSGFsaWFuZSBGZXJyZWlyYSBQZXNzb2EgTmFzY2ltZW50byIsImVtYWlsIjoiaGFsaWFuZXBlc3NvYTIwQGdtYWlsLmNvbSIsImF2YXRhciI6bnVsbCwidXNlcklkIjoiZTA1NmM5Mzc5Mjc0NzRkOWU0NTMyOWZmIiwicGxhbiI6ImZyZWUiLCJjcmVhdGVkQXQiOiIyMDI1LTA5LTI3VDAyOjIzOjAwLjAzOVoiLCJpYXQiOjE3NTkwMDYzNDIsImV4cCI6MTc1OTExNDM0Mn0.wrQpC0Tf4ZBSxP9sKaq_SGPVA2PbXtajfgZ4SdrP254
+
 POST http://localhost:3000/category
 Content-Type: application/json
-Authorization: Bearer your_jwt_token_here
+Authorization: Bearer {{token}}
 
 {
-  "name": "any_category_name",
+  "name": "another_category_name",
   "emoji": "🍹"
 }

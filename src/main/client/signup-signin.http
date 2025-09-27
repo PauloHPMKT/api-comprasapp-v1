@@ -7,3 +7,13 @@ Content-Type: application/json
   "password": "anypassword",
   "confirmationPassword": "anypassword"
 }
+###
+
+POST http://localhost:3000/auth
+Content-Type: application/json
+
+{
+  "email": "halianepessoa20@gmail.com",
+  "password": "anypassword"
+}
+###
