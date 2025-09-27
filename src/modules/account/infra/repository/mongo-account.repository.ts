@@ -1,10 +1,10 @@
 /* eslint-disable prettier/prettier */
-import { MongoHelper } from '@/modules/database/mongodb/helpers/mongo-helper';
+import { Injectable } from '@nestjs/common';
 import { CreateAccountRepositoryModel } from '../../data/models/create-account-repository.model';
 import { CreateAccountRepositoryPort } from '../../data/ports/create-account.repository';
 import { IsActiveAccountRepositoryPort } from '../../data/ports/is-active-account.repository';
-import { Injectable } from '@nestjs/common';
 import { GetAccountByUserIdRepositoryPort } from '@/modules/auth/data/repositories/get-account-by-user-is.repository';
+import { MongoHelper } from '@/modules/database/mongodb/helpers/mongo-helper';
 import { TokenPayloadModel } from '@/modules/auth/domain/models/token-payload';
 
 @Injectable()

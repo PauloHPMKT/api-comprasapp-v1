@@ -1,15 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MongoHelper } from '@/modules/database/mongodb/helpers/mongo-helper';
-import { MongoAccountRepository } from './mongo-account.repository';
+import { MongoAccountRepository } from '../mongo-account.repository';
 import { ObjectId } from 'mongodb';
 
 const makeSut = async (): Promise<SutTypes> => {
   const findOneMock = jest.fn();
   const insertOneMock = jest.fn();
+  const aggregateMock = jest.fn().mockReturnValue({
+    hasNext: jest.fn().mockResolvedValue(true),
+    next: jest.fn().mockResolvedValue({}),
+  });
 
   jest.spyOn(MongoHelper, 'getCollection').mockReturnValue({
     findOne: findOneMock,
     insertOne: insertOneMock,
+    aggregate: aggregateMock,
   } as any);
 
   const moduleRef: TestingModule = await Test.createTestingModule({
@@ -115,5 +120,58 @@ describe('MongoAccountRepository', () => {
     expect(insertedId.toHexString()).toBeTruthy();
     expect(insertedId.toHexString()).not.toBeNull();
     expect(insertOneMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('should return account data when account exists', async () => {
+    const { sut } = await makeSut();
+    const expectedAccount = {
+      id: '507f1f77bcf86cd799439012',
+      name: 'John Doe',
+      email: 'john@example.com',
+      avatar: null,
+      userId: '507f1f77bcf86cd799439012',
+      plan: 'free',
+      password: 'hashedPassword',
+      createdAt: new Date('2025-09-27T01:56:39.666Z'),
+    };
+
+    const aggregateMock = jest.fn().mockReturnValue({
+      hasNext: jest.fn().mockResolvedValue(true),
+      next: jest.fn().mockResolvedValue(expectedAccount),
+    });
+
+    jest.spyOn(MongoHelper, 'getCollection').mockReturnValue({
+      aggregate: aggregateMock,
+    } as any);
+
+    const result = await sut.getAccount('507f1f77bcf86cd799439012');
+    expect(result).toEqual(expectedAccount);
+    expect(aggregateMock).toHaveBeenCalledWith([
+      {
+        $match: { userId: MongoHelper.toObjectId('507f1f77bcf86cd799439012') },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'user',
+        },
+      },
+      { $unwind: '$user' },
+      {
+        $project: {
+          _id: 0,
+          id: '$_id',
+          name: '$user.name',
+          email: '$user.email',
+          avatar: '$user.avatar',
+          userId: '$user._id',
+          plan: '$plan',
+          password: '$password',
+          createdAt: '$createdAt',
+        },
+      },
+    ]);
   });
 });
