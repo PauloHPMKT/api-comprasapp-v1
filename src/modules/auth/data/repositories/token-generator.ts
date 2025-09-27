@@ -1,5 +1,7 @@
-import { TokenPayloadModel } from '../../domain/models/token-payload';
+import { ToJwtTokenPayloadModel } from '../models/token-payload';
 
 export interface GenerateToken {
-  generate(payload: TokenPayloadModel.Params): Promise<{ accessToken: string }>;
+  generate(
+    payload: ToJwtTokenPayloadModel.Params,
+  ): Promise<{ accessToken: string }>;
 }
