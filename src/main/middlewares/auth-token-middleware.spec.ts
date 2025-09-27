@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthTokenMiddleware, TokenDecrypter } from './auth-token-middleware';
+import { AuthTokenMiddleware } from './auth-token-middleware';
 import { Request } from 'express';
 import { UnauthorizedException } from '@nestjs/common';
+import { TokenDecrypter } from '@/modules/auth/data/decode-token';
 
 const makeMocks = () => ({
   tokenDecrypterMock: {
