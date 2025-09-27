@@ -4,9 +4,11 @@ import { GenerateToken } from '../repositories/token-generator';
 import { TokenPayloadModel } from '../../domain/models/token-payload';
 
 class JwtAdapter implements GenerateToken {
-  async generate(payload: TokenPayloadModel.Params): Promise<string> {
+  async generate(
+    payload: TokenPayloadModel.Params,
+  ): Promise<{ accessToken: string }> {
     console.log(payload);
-    return 'valid_token';
+    return { accessToken: 'valid_token' };
   }
 }
 

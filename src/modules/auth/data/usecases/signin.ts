@@ -27,9 +27,9 @@ export class SigninUsecase implements SigninPort {
       password,
     });
 
-    await this.generateToken.generate(payload);
+    const { accessToken } = await this.generateToken.generate(payload);
     return {
-      accessToken: 'valid_token',
+      accessToken,
     };
   }
 }
