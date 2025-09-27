@@ -10,4 +10,7 @@ export const makeValidateUserServiceMock = () => ({
       createdAt: new Date('2025-09-27T01:56:39.666Z'),
     }),
   },
+  compareIfPasswordIsValidStub: {
+    compare: jest.fn().mockResolvedValue(true),
+  },
 });

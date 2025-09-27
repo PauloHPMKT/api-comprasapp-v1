@@ -24,4 +24,21 @@ describe('ValidateUserService', () => {
       'valid_user_id',
     );
   });
+
+  it('should calls compareIfPasswordIsValid with correct values', async () => {
+    const { sut, compareIfPasswordIsValidStub } = await makeValidateUserSut();
+    const params = {
+      id: 'valid_user_id',
+      password: 'any_password',
+    };
+    const compareIfPasswordIsValidSpy = jest.spyOn(
+      compareIfPasswordIsValidStub,
+      'compare',
+    );
+    await sut.validate(params);
+    expect(compareIfPasswordIsValidSpy).toHaveBeenCalledWith(
+      'any_password',
+      'hashed_password',
+    );
+  });
 });
