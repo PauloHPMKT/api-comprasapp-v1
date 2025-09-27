@@ -1,3 +1,4 @@
+import { TokenDecrypter } from '@/modules/auth/data/decode-token';
 import {
   Inject,
   Injectable,
@@ -5,10 +6,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-
-export interface TokenDecrypter {
-  decrypt(token: string): any;
-}
 
 @Injectable()
 export class AuthTokenMiddleware implements NestMiddleware {
