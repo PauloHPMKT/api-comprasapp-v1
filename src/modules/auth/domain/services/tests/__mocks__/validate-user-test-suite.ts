@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ValidateUserService } from '../../validate-user.service';
 import { makeValidateUserServiceMock } from './validate-user.mocks';
-import { getAccountByUserIdRepositoryPort } from '../../../../data/repositories/get-account-by-user-is.repository';
+import { GetAccountByUserIdRepositoryPort } from '../../../../data/repositories/get-account-by-user-is.repository';
 
 export const makeValidateUserSut = async (): Promise<SutTypes> => {
   const { getAccountByUserIdRepositoryPortStub, compareIfPasswordIsValidStub } =
@@ -32,7 +32,7 @@ export const makeValidateUserSut = async (): Promise<SutTypes> => {
 type SutTypes = {
   sut: ValidateUserService;
   getAccountByUserIdRepositoryPortStub: {
-    getAccount: jest.Mock<getAccountByUserIdRepositoryPort>;
+    getAccount: jest.Mock<GetAccountByUserIdRepositoryPort>;
   };
   compareIfPasswordIsValidStub: {
     compare: jest.Mock<Promise<boolean>>;
