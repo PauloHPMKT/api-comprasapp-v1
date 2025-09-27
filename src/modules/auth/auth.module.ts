@@ -3,6 +3,7 @@ import { AuthController } from './presentation/controllers/auth.controller';
 import { makeAuthUsecaseProviders } from './domain/providers/usecase.provider';
 import { makeServiceProvider } from './data/providers/service.provider';
 import { makeRepositoriesProvider } from './data/providers/repositories.provider';
+import { EncrypterModule } from '../encrypter/presentation/encrypter.module';
 
 const providers: Provider[] = [
   ...makeAuthUsecaseProviders(),
@@ -11,7 +12,7 @@ const providers: Provider[] = [
 ];
 
 @Module({
-  imports: [],
+  imports: [EncrypterModule],
   controllers: [AuthController],
   providers,
   exports: ['FIND_USER_ID_BY_EMAIL_REPOSITORY_PORT'],
