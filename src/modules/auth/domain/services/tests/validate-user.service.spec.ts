@@ -59,4 +59,18 @@ describe('ValidateUserService', () => {
       createdAt: new Date('2025-09-27T01:56:39.666Z'),
     });
   });
+
+  it('should throw data are incorrects if password not match', async () => {
+    const { sut, compareIfPasswordIsValidStub } = await makeValidateUserSut();
+    jest
+      .spyOn(compareIfPasswordIsValidStub, 'compare')
+      .mockResolvedValueOnce(false);
+
+    const params = {
+      id: 'invalid_user_id',
+      password: 'any_password',
+    };
+    const promise = sut.validate(params);
+    await expect(promise).rejects.toThrow('Invalid credentials');
+  });
 });
