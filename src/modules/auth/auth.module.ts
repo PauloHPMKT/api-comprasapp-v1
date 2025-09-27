@@ -2,10 +2,12 @@ import { Module, Provider } from '@nestjs/common';
 import { AuthController } from './presentation/controllers/auth.controller';
 import { makeAuthUsecaseProviders } from './domain/providers/usecase.provider';
 import { makeServiceProvider } from './data/providers/service.provider';
+import { makeRepositoriesProvider } from './data/providers/repositories.provider';
 
 const providers: Provider[] = [
   ...makeAuthUsecaseProviders(),
   ...makeServiceProvider(),
+  ...makeRepositoriesProvider(),
 ];
 
 @Module({
