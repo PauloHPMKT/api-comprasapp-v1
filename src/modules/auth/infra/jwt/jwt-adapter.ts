@@ -4,11 +4,17 @@ import { TokenDecrypter } from '../../data/decode-token';
 import { GenerateToken } from '../../data/repositories/token-generator';
 import { ToJwtTokenPayloadModel } from '../../data/models/token-payload';
 import { AccountTokenPayload } from './types/jwt.types';
+import { EnvConfigService } from '@/shared/env-config/env-config.service';
 
 @Injectable()
 export class JwtTokenAdapter implements TokenDecrypter, GenerateToken {
+  private readonly jwtSecret: string;
+  constructor(private readonly envConfigService: EnvConfigService) {
+    this.jwtSecret = this.envConfigService.getEnv('JWT_SECRET');
+  }
+
   decrypt(token: string): JwtPayload | string {
-    return jwt.verify(token, 'C0MPR4S@PP_S3CR3TK3Y');
+    return jwt.verify(token, this.jwtSecret) as JwtPayload;
   }
 
   async generate(
@@ -23,7 +29,7 @@ export class JwtTokenAdapter implements TokenDecrypter, GenerateToken {
       plan: payload.plan,
       createdAt: payload.createdAt,
     };
-    const token = jwt.sign(tokenPayload, 'C0MPR4S@PP_S3CR3TK3Y', {
+    const token = jwt.sign(tokenPayload, this.jwtSecret, {
       expiresIn: '30h',
     });
     return { accessToken: token };
