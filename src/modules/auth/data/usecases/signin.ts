@@ -11,9 +11,14 @@ export class SigninUsecase implements SigninPort {
     @Inject('VALIDATE_USER_CREDENTIALS')
     private readonly validateUserCredentials: ValidateUserCredentials,
   ) {}
+
   async execute(data: AuthModel.Signin): Promise<AuthModel.SigninResult> {
     const { email, password } = data;
-    await this.findUserIdByEmailRepository.findByEmail(email);
+    const user = await this.findUserIdByEmailRepository.findByEmail(email);
+    if (!user) {
+      throw new Error('User not found');
+    }
+
     await this.validateUserCredentials.validate({ email, password });
     return {
       accessToken: 'valid_token',
