@@ -41,4 +41,22 @@ describe('ValidateUserService', () => {
       'hashed_password',
     );
   });
+
+  it('should return a valid account data withoun password', async () => {
+    const { sut } = await makeValidateUserSut();
+    const params = {
+      id: 'valid_user_id',
+      password: 'any_password',
+    };
+    const account = await sut.validate(params);
+    expect(account).toEqual({
+      id: 'valid_id',
+      name: 'valid_name',
+      email: 'valid_email',
+      avatar: null,
+      accountId: 'valid_account_id',
+      plan: 'free',
+      createdAt: new Date('2025-09-27T01:56:39.666Z'),
+    });
+  });
 });
