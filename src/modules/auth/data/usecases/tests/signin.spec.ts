@@ -108,4 +108,16 @@ describe('SigninUsecase', () => {
       createdAt: new Date('2025-09-27T01:56:39.666Z'),
     });
   });
+
+  it('should return an accessToken on success', async () => {
+    const { sut } = await makeSigninUsecaseSut();
+    const params = {
+      email: 'any_email',
+      password: 'any_password',
+    };
+    const auth = await sut.execute(params);
+    expect(auth).toEqual({
+      accessToken: 'valid_token',
+    });
+  });
 });
