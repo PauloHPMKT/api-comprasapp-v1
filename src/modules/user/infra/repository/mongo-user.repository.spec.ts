@@ -97,4 +97,18 @@ describe('MongoUserRepository', () => {
       { projection: { _id: 1 } },
     );
   });
+
+  it('Should return a valid user Id if user is found', async () => {
+    const { sut, findOneMock } = await makeSut();
+    const _id = new ObjectId();
+    findOneMock.mockResolvedValueOnce({ _id });
+    const user = await sut.findByEmail('any_email@mail.com');
+
+    expect(user).toBeTruthy();
+    expect(user?.toString()).toBe(_id.toString());
+    expect(findOneMock).toHaveBeenCalledWith(
+      { email: 'any_email@mail.com' },
+      { projection: { _id: 1 } },
+    );
+  });
 });
