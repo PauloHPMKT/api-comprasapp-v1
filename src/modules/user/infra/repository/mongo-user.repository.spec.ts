@@ -52,7 +52,7 @@ describe('MongoUserRepository', () => {
     expect(sut).toBeTruthy();
   });
 
-  it('deve retornar true quando o usuário existir', async () => {
+  it('should return true if a user exists', async () => {
     const { sut, findOneMock } = await makeSut();
     findOneMock.mockResolvedValueOnce({ _id: 'any_id' });
     const result = await sut.exists('any_email@mail.com');
@@ -85,5 +85,16 @@ describe('MongoUserRepository', () => {
     expect(account).toBeTruthy();
     expect(account.id.toString()).toBe(insertedId.toString());
     expect(account.email).toBe('any_email@mail.com');
+  });
+
+  it('Should return null if user is not found', async () => {
+    const { sut, findOneMock } = await makeSut();
+    findOneMock.mockResolvedValueOnce(null);
+    const user = await sut.findByEmail('any_email@mail.com');
+    expect(user).toBeNull();
+    expect(findOneMock).toHaveBeenCalledWith(
+      { email: 'any_email@mail.com' },
+      { projection: { _id: 1 } },
+    );
   });
 });
