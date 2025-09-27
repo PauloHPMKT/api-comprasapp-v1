@@ -46,7 +46,7 @@ describe('SigninUsecase', () => {
     const promise = sut.execute(params);
     await expect(promise).resolves.not.toThrow();
     expect(validateUserCredentialsSpy).toHaveBeenCalledWith({
-      email: 'any_email',
+      id: 'any_user_id',
       password: 'any_password',
     });
   });
@@ -72,9 +72,8 @@ describe('SigninUsecase', () => {
       email: 'any_email',
       password: 'any_password',
     };
-    const createdAt = new Date('2025-09-27T01:56:39.666Z');
     const validateCredentials = await validateUserCredentialsStub.validate({
-      email: 'any_email',
+      id: 'any_user_id',
       password: 'any_password',
     });
     await sut.execute(params);
@@ -85,7 +84,7 @@ describe('SigninUsecase', () => {
       avatar: null,
       accountId: 'valid_account_id',
       plan: 'free',
-      createdAt,
+      createdAt: new Date('2025-09-27T01:56:39.666Z'),
     });
   });
 

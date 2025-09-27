@@ -41,7 +41,7 @@ export class MongoUserRepository
     return { id, email };
   }
 
-  async findByEmail(email: string): Promise<string | null> {
+  async findByEmail(email: string): Promise<{ id: string } | null> {
     const usersCollection = MongoHelper.getCollection('users');
     const user = await usersCollection.findOne(
       { email },

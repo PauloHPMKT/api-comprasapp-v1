@@ -23,7 +23,7 @@ export class SigninUsecase implements SigninPort {
     }
 
     const payload = await this.validateUserCredentials.validate({
-      email,
+      id: user.id,
       password,
     });
 

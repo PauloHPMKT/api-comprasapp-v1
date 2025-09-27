@@ -44,7 +44,7 @@ type SutTypes = {
   validateUserCredentialsStub: {
     validate: jest.Mock<
       Promise<TokenPayloadModel.Params>,
-      [{ email: string; password: string }]
+      [{ id: string; password: string }]
     >;
   };
   findUserIdByEmailStub: {
