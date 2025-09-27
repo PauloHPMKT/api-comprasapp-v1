@@ -47,10 +47,7 @@ export class MongoUserRepository
       { email },
       { projection: { _id: 1 } },
     );
-    console.log('cheguei ate aqui!!!');
-    if (!user) {
-      return null;
-    }
+    if (!user) return null;
     return MongoHelper.map(user).id;
   }
 }
