@@ -8,6 +8,21 @@ describe('SigninUsecase', () => {
     expect(sut).toBeInstanceOf(SigninUsecase);
   });
 
+  it('should call getUserIdByEmailRepository with correct email', async () => {
+    const { sut, findUserIdByEmailStub } = await makeSigninUsecaseSut();
+    const findUserIdByEmailSpy = jest.spyOn(
+      findUserIdByEmailStub,
+      'findByEmail',
+    );
+    const params = {
+      email: 'any_email',
+      password: 'any_password',
+    };
+    const promise = sut.execute(params);
+    await expect(promise).resolves.not.toThrow();
+    expect(findUserIdByEmailSpy).toHaveBeenCalledWith('any_email');
+  });
+
   it('should call validateUserCredentials with correct values', async () => {
     const { sut, validateUserCredentialsStub } = await makeSigninUsecaseSut();
     const validateUserCredentialsSpy = jest.spyOn(
